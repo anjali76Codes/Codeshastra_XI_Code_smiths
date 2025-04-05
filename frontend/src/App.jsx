@@ -1,15 +1,23 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import TextFormatter from './components/validator_feature/TextFormatter';
 import CodeFormatter from './components/validator_feature/CodeFormatter';
 import JsonFormatter from './components/validator_feature/JsonFormatter';
 import FormatterApp from './components/validator_feature/FormatterApp';
 import ApiDocsServicePage from './pages/api_feature/ApiDocsServicePage'
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
+// Component imports
 import GraphicGenerator from './pages/ImgGraphicConverter/GraphicGenerator';
 import ImageConverter from './components/ImgGraphicConverter/ImageConvertor';
 import ColorFeature from './pages/ImgGraphicConverter/Color';
 import ChatWithAI from './components/ImgGraphicConverter/ChatWithAI';
 import ChatApp from './components/ImgGraphicConverter/ChatWithAI';
+import Signup from './components/login/Signup';
+import Signin from './components/login/Signin';
+import Home from './components/login/Home';
+import SubscriptionPage from './components/login/SubscriptionPage';
+import PaymentGateway from './components/login/PaymentPage';
+import PaymentPage from './components/login/PaymentPage';
 
 function App() {
   return (
@@ -21,6 +29,7 @@ function App() {
           <Link to="/image" className="text-blue-600 hover:underline">Img converter</Link>
         </div>
       </nav>
+
       <Routes>
         <Route path="/" element={<div className="text-center mt-10 text-xl">Welcome to the QR Code App</div>} />
         <Route path="/graphic" element={<GraphicGenerator />} />
@@ -31,6 +40,13 @@ function App() {
         <Route path="/json" element={<JsonFormatter />} />
         <Route path="/format" element={<FormatterApp />} />
         <Route path="/chat" element={<ChatWithAI />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/subscribe" element={<SubscriptionPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
+
+
       </Routes>
     </Router>
   );
