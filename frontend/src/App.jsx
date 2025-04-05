@@ -1,14 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import TextFormatter from './components/TextFormatter';
-import CodeFormatter from './components/CodeFormatter';
-import JsonFormatter from './components/JsonFormatter';
-import FormatterApp from './components/FormatterApp';
+import TextFormatter from './components/validator_feature/TextFormatter';
+import CodeFormatter from './components/validator_feature/CodeFormatter';
+import JsonFormatter from './components/validator_feature/JsonFormatter';
+import FormatterApp from './components/validator_feature/FormatterApp';
 import ApiDocsServicePage from './pages/api_feature/ApiDocsServicePage'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import GraphicGenerator from './pages/ImgGraphicConverter/GraphicGenerator';
-import ImageConverter from './pages/ImgGraphicConverter/ImageConvertor';
+import ImageConverter from './components/ImgGraphicConverter/ImageConvertor';
 import ColorFeature from './pages/ImgGraphicConverter/Color';
+import ChatWithAI from './components/ImgGraphicConverter/ChatWithAI';
+import ChatApp from './components/ImgGraphicConverter/ChatWithAI';
 
 function App() {
   return (
@@ -27,8 +28,9 @@ function App() {
         <Route path="/color" element={<ColorFeature />} />
         <Route path="/api" element={<ApiDocsServicePage />} />
         <Route path="/code" element={<CodeFormatter />} />
-        <Route path="/json" element={<JsonFormatter/>}/>
-        <Route path="/format" element={<FormatterApp/>}/>
+        <Route path="/json" element={<JsonFormatter />} />
+        <Route path="/format" element={<FormatterApp />} />
+        <Route path="/chat" element={<ChatWithAI />} />
       </Routes>
     </Router>
   );
