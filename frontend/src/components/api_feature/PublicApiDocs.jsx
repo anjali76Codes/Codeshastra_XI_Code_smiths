@@ -16,7 +16,7 @@ const PublicApiDocs = () => {
     }
 
     return (
-        <div className="flex bg-gray-100 min-h-screen">
+        <div className="flex bg-purple-100 min-h-screen">
             <PublicApiSidebar onSelect={setSelectedApi} selected={selectedApi} />
 
             <main className="flex-1 p-10 flex flex-col overflow-y-auto">
@@ -26,7 +26,7 @@ const PublicApiDocs = () => {
                 <div className="bg-white p-6 rounded-xl shadow border max-w-3xl mb-6">
                     <div className="mb-3">
                         <span className="font-semibold">Method:</span>{' '}
-                        <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-md">{api.method}</span>
+                        <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md">{api.method}</span>
                     </div>
                     <div className="mb-3">
                         <span className="font-semibold">Endpoint:</span>{' '}
