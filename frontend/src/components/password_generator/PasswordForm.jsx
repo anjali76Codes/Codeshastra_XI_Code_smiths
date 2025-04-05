@@ -135,6 +135,7 @@ const PasswordForm = () => {
   };
 
   return (
+    
     <div className="min-h-[75vh] bg-gray-900 text-white flex flex-col items-center justify-start px-4 py-10">
       <div className="w-full max-w-7xl flex flex-col md:flex-row gap-6">
         {/* Password Generator Left Panel */}
