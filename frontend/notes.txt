@@ -1,0 +1,15 @@
+Categorize
+
+1st 
+converting json, xmls, csv, excel
+validating
+
+2nd
+generator - qr, pass, rand, bar
+color palette
+
+3rd
+apis , network
+
+4th 
+text and code formatting
