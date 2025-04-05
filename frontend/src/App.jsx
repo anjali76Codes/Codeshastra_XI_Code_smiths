@@ -30,6 +30,7 @@ import PaymentPage from './components/login/PaymentPage';
 // Landing Page
 import LandingPage from './pages/LandingPage';
 import { Terminal } from 'lucide-react';
+import EmbeddedWebsite from './EmbeddedWebsite';
 
 function App() {
   return (
@@ -71,6 +72,9 @@ function App() {
         <Route path="/subscribe" element={<SubscriptionPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path='/terminal' element={<Terminal />} />
+        <Route path='/embed' element={<EmbeddedWebsite />} />
+
+
       </Routes>
     </Router>
   );

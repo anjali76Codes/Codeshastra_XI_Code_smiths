@@ -1,38 +1,37 @@
+// server.js or server.mjs
 import express from 'express';
-import expressWsPkg from 'express-ws';
-import pty from 'node-pty';
 import cors from 'cors';
+import bodyParser from 'body-parser';
+import { exec } from 'child_process';
 
 const app = express();
-const { app: expressWsApp } = expressWsPkg(app);
-expressWsApp.use(cors());
-expressWsApp.use(express.json());
+const PORT = 3000;
 
-expressWsApp.ws('/terminal', function (ws, req) {
-    const shell = process.env.SHELL || (process.platform === 'win32' ? 'powershell.exe' : 'bash');
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json());
 
-    const ptyProcess = pty.spawn(shell, [], {
-        name: 'xterm-color',
-        cols: 80,
-        rows: 24,
-        cwd: process.env.HOME || process.cwd(),
-        env: process.env
-    });
+// Command execution endpoint
+app.post('/api/exec', async (req, res) => {
+  const { cmd } = req.body;
+  const allowed = ['ls', 'mkdir', 'cd', 'pwd', 'touch', 'clear']; // Added clear command
+  const [command] = cmd.split(' ');
 
-    ptyProcess.on('data', function (data) {
-        ws.send(data);
-    });
+  if (!allowed.includes(command)) {
+    return res.send("❌ Command not allowed.");
+  }
 
-    ws.on('message', function (msg) {
-        ptyProcess.write(msg);
-    });
+  if (command === 'clear') {
+    return res.send(""); // Clear command will return an empty response to clear the terminal screen.
+  }
 
-    ws.on('close', function () {
-        ptyProcess.kill();
-    });
+  exec(cmd, (error, stdout, stderr) => {
+    if (error) return res.send(stderr);
+    res.send(stdout);
+  });
 });
 
-const PORT = 5000;
-expressWsApp.listen(PORT, () => {
-    console.log(`Terminal server running on http://localhost:${PORT}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`✅ Server is running at http://localhost:${PORT}`);
 });
