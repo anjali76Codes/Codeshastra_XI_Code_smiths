@@ -18,6 +18,27 @@ const ColorTool = () => {
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
+  const [isSticky, setIsSticky] = useState(false);
+  const paletteWrapperRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsSticky(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "-1px 0px 0px 0px" } // triggers as soon as it hits top
+    );
+
+    if (paletteWrapperRef.current) {
+      observer.observe(paletteWrapperRef.current);
+    }
+
+    return () => {
+      if (paletteWrapperRef.current) {
+        observer.unobserve(paletteWrapperRef.current);
+      }
+    };
+  }, []);
+
+
   const formatColor = (hex) => {
     const c = colord(hex);
     switch (format) {
@@ -164,13 +185,13 @@ const ColorTool = () => {
   }, [color, paletteType, locked]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen backdrop-blur-sm border-2 border-purple-100 rounded-3xl p-3">
       {/* Floating Controls */}
       <div className="sticky bg-white shadow-md px-4 py-2 rounded-full flex gap-3 z-50">
         <select
           value={paletteType}
           onChange={(e) => setPaletteType(e.target.value)}
-          className="px-2 py-1 rounded-md border"
+          className="px-2 py-1 rounded-3xl bg-purple-200"
         >
           <option value="complementary">Complementary</option>
           <option value="analogous">Analogous</option>
@@ -182,7 +203,7 @@ const ColorTool = () => {
         <select
           value={format}
           onChange={(e) => setFormat(e.target.value)}
-          className="px-2 py-1 rounded-md border"
+          className="px-2 py-1 rounded-3xl bg-purple-200"
         >
           <option value="hex">HEX</option>
           <option value="rgb">RGB</option>
@@ -192,28 +213,33 @@ const ColorTool = () => {
 
         <button
           onClick={randomize}
-          className="bg-blue-600 text-white px-3 py-1 rounded-md"
+          className="bg-purple-600 text-white px-3 py-1 rounded-3xl"
         >
           🎲
         </button>
 
         <button
           onClick={exportPaletteAsImage}
-          className="bg-green-500 text-white px-3 py-1 rounded-md"
+          className="bg-purple-900 text-white px-3 py-1 rounded-3xl"
         >
           📤
         </button>
       </div>
 
-      {/* Palette Display */}
+      {/* Sentinel div to track scroll position */}
+      <div ref={paletteWrapperRef} className="h-32 -mt-32 pointer-events-none" />
+
+      {/* Sticky Palette */}
       <div
         ref={paletteRef}
-        className="flex w-full mt-24 rounded-xl overflow-hidden shadow-lg"
+        className={`sticky mt-10 z-40 transition-all duration-300 ease-in-out bg-white rounded-xl overflow-hidden shadow-md flex w-full ${
+          isSticky ? 'h-32' : 'h-80'
+        }`}
       >
         {palette.map((hex, i) => (
           <div
             key={i}
-            className="flex-1 relative h-80 flex items-center justify-center text-white font-semibold text-lg cursor-pointer group transition duration-200"
+            className="flex-1 relative flex items-center justify-center text-white font-semibold text-sm cursor-pointer group transition duration-200"
             style={{ backgroundColor: hex }}
             onClick={() => copyToClipboard(formatColor(hex))}
           >
@@ -222,7 +248,7 @@ const ColorTool = () => {
                 e.stopPropagation();
                 toggleLock(i);
               }}
-              className="absolute top-2 right-2 text-xl opacity-60 hover:opacity-100 transition"
+              className="absolute top-2 right-2 text-lg opacity-70 hover:opacity-100 transition"
             >
               {locked[i] ? '🔒' : '🔓'}
             </button>
@@ -234,9 +260,11 @@ const ColorTool = () => {
         ))}
       </div>
 
+
+
       {/* Color Picker & Image Picker */}
       <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-md">
-        <div className="flex flex-wrap justify-center gap-6">
+        <div className="flex flex-wrap justify-center gap-6 text-center ">
           {/* Color Picker */}
           <div className="flex flex-col items-center">
             <HexColorPicker color={color} onChange={setColor} />
@@ -244,23 +272,20 @@ const ColorTool = () => {
               type="text"
               value={color}
               onChange={(e) => setColor(e.target.value)}
-              className="mt-4 px-4 py-2 border rounded-lg w-40 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-4 px-4 py-2 bg-purple-100 rounded-lg w-40 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
 
-          {/* Image Picker */}
-          <div className="w-full md:w-2/3 text-center">
-            <label className="block mb-2 font-medium text-sm">Pick color from image:</label>
+            <label className="block m-2 font-medium text-sm">Pick color from image:</label>
             <div
               onDrop={handleDrop}
               onDragOver={(e) => e.preventDefault()}
               onClick={handleBrowseClick}
-              className="w-full border-2 border-dashed border-blue-400 rounded-xl p-6 text-center cursor-pointer mb-4 hover:bg-blue-50 transition"
+              className="w-auto max-w-50 h-40 border-2 border-dashed border-purple-400 rounded-xl p-6 text-center cursor-pointer mb-4 hover:bg-purple-50 transition"
             >
               {imagePreview ? (
-                <img src={imagePreview} alt="Preview" className="max-h-60 mx-auto rounded" />
+                <img src={imagePreview} alt="Preview" className="max-h-30 max-w-40 mx-auto rounded" />
               ) : (
-                <p className="text-gray-500">📂 Drag & drop an image here or click to browse</p>
+                <p className="text-gray-500">Drag & drop an image here or click to browse</p>
               )}
               <input
                 type="file"
@@ -270,9 +295,13 @@ const ColorTool = () => {
                 onChange={(e) => handleFile(e.target.files[0])}
               />
             </div>
+          </div>
+
+          {/* Image Picker */}
+          <div className="flex w-full md:w-2/3 ">
             <canvas
               ref={canvasRef}
-              className="border rounded-md cursor-crosshair max-w-full"
+              className="bg-purple-100 rounded-3xl cursor-crosshair max-w-full"
             />
           </div>
         </div>

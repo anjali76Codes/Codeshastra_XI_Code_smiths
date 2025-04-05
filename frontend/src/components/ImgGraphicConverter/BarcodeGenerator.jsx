@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Barcode from 'react-barcode';
 
-const BarcodeGenerator = () => {
+const BarcodeGenerator = ({ isDarkMode }) => {
   const [value, setValue] = useState('');
   const [format, setFormat] = useState('EAN13');
   const barcodeRef = useRef();
@@ -58,23 +58,36 @@ const BarcodeGenerator = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-md">
-      <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800">🇮🇳 Barcode Generator</h2>
+    <div className={`max-w-md mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-md transition-colors duration-300
+      ${isDarkMode
+        ? 'bg-purple-900/20 border-white text-white'
+        : 'bg-purple-300 border-purple-200 text-black'
+      }`}
+    >
+      <h2 className="text-2xl font-semibold mb-4 text-center">Barcode Generator</h2>
 
       <input
         type="text"
         placeholder="Enter barcode value"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className={`w-full px-4 py-2 rounded-3xl mb-2 focus:outline-none focus:ring-2
+          ${isDarkMode
+            ? 'bg-purple-900/80 text-white focus:ring-purple-300'
+            : 'bg-purple-100 text-black focus:ring-blue-400'
+          }`}
       />
 
-      <p className="text-sm text-gray-500 mb-4">{showHint()}</p>
+      <p className={`text-sm mb-4 ${isDarkMode ? 'text-purple-200' : 'text-gray-700'}`}>{showHint()}</p>
 
       <select
         value={format}
         onChange={(e) => setFormat(e.target.value)}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className={`w-full px-4 py-2 rounded-3xl mb-4 focus:outline-none focus:ring-2
+          ${isDarkMode
+            ? 'bg-purple-900/80 text-white focus:ring-purple-300'
+            : 'bg-purple-100 text-black focus:ring-blue-400'
+          }`}
       >
         {barcodeTypes.map((type) => (
           <option key={type.value} value={type.value}>{type.label}</option>
@@ -82,11 +95,13 @@ const BarcodeGenerator = () => {
       </select>
 
       {value && (
-        <div className="flex flex-col items-center mt-4 bg-white p-4 rounded-lg border border-gray-200" ref={barcodeRef}>
+        <div className={`flex flex-col items-center mt-4 p-4 rounded-lg
+          ${isDarkMode ? 'bg-gray-100' : 'bg-gray-100'}`} ref={barcodeRef}
+        >
           <Barcode value={value} format={format} />
           <button
             onClick={handleDownload}
-            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-3xl hover:bg-purple-700 transition"
           >
             Download Barcode
           </button>
