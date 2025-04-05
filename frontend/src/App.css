@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+/* animations.css */
+.palette-grid > div {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
