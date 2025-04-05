@@ -8,7 +8,7 @@ import ColorFeature from './pages/ImgGraphicConverter/Color';
 import ChatWithAI from './components/ImgGraphicConverter/ChatWithAI';
 
 // Format Converter
-import FormatConverterPage from './pages/converter_feature/FormatConverterPage';
+import FormatConverterPage from './pages/Format and Convert/FormatConverterPage';
 
 // Random Generator
 import randomnogeneratorpage from './pages/RandomGeneratorPage/randomgeneratorpage';
@@ -16,7 +16,6 @@ import randomnogeneratorpage from './pages/RandomGeneratorPage/randomgeneratorpa
 // Validator features
 import FormatterApp from './components/validator_feature/FormatterApp';
 import CodeFormatter from './components/validator_feature/CodeFormatter';
-import JsonFormatter from './components/validator_feature/JsonFormatter';
 
 // API Docs
 import ApiDocsServicePage from './pages/api_feature/ApiDocsServicePage';
@@ -30,6 +29,7 @@ import PaymentPage from './components/login/PaymentPage';
 
 // Landing Page
 import LandingPage from './pages/LandingPage';
+import { Terminal } from 'lucide-react';
 
 function App() {
   return (
@@ -39,14 +39,14 @@ function App() {
           <Link to="/" className="text-purple-600 hover:underline">Home</Link>
           <Link to="/graphic" className="text-purple-600 hover:underline">Graphic Generator</Link>
           <Link to="/image" className="text-purple-600 hover:underline">Image Converter</Link>
-          <Link to="/color" className="text-purple-600 hover:underline">Color Feature</Link>
+          {/* <Link to="/color" className="text-purple-600 hover:underline">Color Feature</Link> */}
           <Link to="/format" className="text-purple-600 hover:underline">Format Converter</Link>
           <Link to="/random" className="text-purple-600 hover:underline">Random Generator</Link>
           <Link to="/chat" className="text-purple-600 hover:underline">Chat with AI</Link>
           <Link to="/api" className="text-purple-600 hover:underline">API Docs</Link>
-          <Link to="/formatter" className="text-purple-600 hover:underline">Formatter App</Link>
-          <Link to="/code" className="text-purple-600 hover:underline">Code Formatter</Link>
-          <Link to="/json" className="text-purple-600 hover:underline">JSON Formatter</Link>
+          {/* <Link to="/formatter" className="text-purple-600 hover:underline">Formatter App</Link> */}
+          {/* <Link to="/code" className="text-purple-600 hover:underline">Code Formatter</Link> */}
+          {/* <Link to="/json" className="text-purple-600 hover:underline">JSON Formatter</Link> */}
           <Link to="/signin" className="text-purple-600 hover:underline">Sign In</Link>
           <Link to="/signup" className="text-purple-600 hover:underline">Sign Up</Link>
           <Link to="/subscribe" className="text-purple-600 hover:underline">Subscribe</Link>
@@ -58,12 +58,11 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/graphic" element={<GraphicSuite />} />
         <Route path="/image" element={<ImageConverter />} />
-        <Route path="/color" element={<ColorFeature />} />
+        {/* <Route path="/color" element={<ColorFeature />} /> */}
         <Route path="/format" element={<FormatConverterPage />} />
         <Route path="/random" element={<randomnogeneratorpage />} />
-        <Route path="/formatter" element={<FormatterApp />} />
-        <Route path="/code" element={<CodeFormatter />} />
-        <Route path="/json" element={<JsonFormatter />} />
+        {/* <Route path="/formatter" element={<FormatterApp />} /> */}
+        {/* <Route path="/code" element={<CodeFormatter />} /> */}
         <Route path="/api" element={<ApiDocsServicePage />} />
         <Route path="/chat" element={<ChatWithAI />} />
         <Route path="/signin" element={<Signin />} />
@@ -71,6 +70,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/subscribe" element={<SubscriptionPage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path='/terminal' element={<Terminal />} />
       </Routes>
     </Router>
   );
