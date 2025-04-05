@@ -57,11 +57,11 @@ function FormatterApp() {
       }
       setFormattedOutput(output);
       setIsValid(true);
-      setValidationMessage('✅ Valid ' + formatType.toUpperCase());
+      setValidationMessage('Valid ' + formatType.toUpperCase());
     } catch (err) {
       setFormattedOutput('Invalid input');
       setIsValid(false);
-      setValidationMessage(`❌ Invalid ${formatType.toUpperCase()} format`);
+      setValidationMessage(`Invalid ${formatType.toUpperCase()} format`);
     }
   };
 
@@ -93,10 +93,10 @@ function FormatterApp() {
       }
 
       setIsValid(true);
-      setValidationMessage('✅ Valid ' + formatType.toUpperCase());
+      setValidationMessage('Valid ' + formatType.toUpperCase());
     } catch (err) {
       setIsValid(false);
-      setValidationMessage(`❌ Invalid ${formatType.toUpperCase()} format`);
+      setValidationMessage(`Invalid ${formatType.toUpperCase()} format`);
     }
   };
 

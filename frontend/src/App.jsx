@@ -8,8 +8,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import GraphicSuite from './pages/ImgGraphicConverter/GraphicGenerator';
 import ImageConverter from './pages/ImgGraphicConverter/ImageConvertor';
 import ColorFeature from './pages/ImgGraphicConverter/Color';
-import FormatConverterPage from "./pages/converter_feature/FormatConverterPage";
+import FormatConverterPage from "./pages/Format and Convert/FormatConverterPage";
 import randomnogeneratorpage from "./pages/RandomGeneratorPage/randomgeneratorpage";
+import FormatterApp from "./components/validator_feature/FormatterApp"
 import LandingPage from "./pages/LandingPage";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Link to="/" className="text-purple-600 hover:underline">Home</Link>
           <Link to="/graphic" className="text-purple-600 hover:underline">graphic Generator</Link>
           <Link to="/image" className="text-purple-600 hover:underline">Img converter</Link>
+          <Link to="/format" className="text-purple-600 hover:underline">Convertor</Link>
         </div>
       </nav>
       <Routes>
@@ -30,12 +32,10 @@ function App() {
         <Route path="/color" element={<ColorFeature />} />
         <Route path="/api" element={<ApiDocsServicePage />} />
         <Route path="/code" element={<CodeFormatter />} />
-        
+        <Route path="/editor" element={<FormatterApp />} />
         <Route path="/random" element={<randomnogeneratorpage />} />
-        {/* <Route path="/json" element={<JsonFormatter/>}/>
-        <Route path="/format" element={<FormatterApp/>}/>
-        <Route path="/format" element={<FormatConverterPage />} /> */}
         <Route path="/format" element={<FormatConverterPage />} />
+
 
       </Routes>
     </Router>
