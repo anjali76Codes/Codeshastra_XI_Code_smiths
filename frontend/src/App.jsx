@@ -5,14 +5,18 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import GraphicSuite from './pages/ImgGraphicConverter/GraphicGenerator';
 import ImageConverter from './pages/ImgGraphicConverter/ImageConvertor';
 import ColorFeature from './pages/ImgGraphicConverter/Color';
+import ChatWithAI from './components/ImgGraphicConverter/ChatWithAI';
+
+// Format Converter
 import FormatConverterPage from './pages/converter_feature/FormatConverterPage';
+
+// Random Generator
 import randomnogeneratorpage from './pages/RandomGeneratorPage/randomgeneratorpage';
 
 // Validator features
-import TextFormatter from './components/validator_feature/TextFormatter';
+import FormatterApp from './components/validator_feature/FormatterApp';
 import CodeFormatter from './components/validator_feature/CodeFormatter';
 import JsonFormatter from './components/validator_feature/JsonFormatter';
-import FormatterApp from './components/validator_feature/FormatterApp';
 
 // API Docs
 import ApiDocsServicePage from './pages/api_feature/ApiDocsServicePage';
@@ -23,9 +27,6 @@ import Signin from './components/login/Signin';
 import Home from './components/login/Home';
 import SubscriptionPage from './components/login/SubscriptionPage';
 import PaymentPage from './components/login/PaymentPage';
-
-// Chat Feature
-import ChatWithAI from './components/ImgGraphicConverter/ChatWithAI';
 
 // Landing Page
 import LandingPage from './pages/LandingPage';
@@ -43,6 +44,13 @@ function App() {
           <Link to="/random" className="text-purple-600 hover:underline">Random Generator</Link>
           <Link to="/chat" className="text-purple-600 hover:underline">Chat with AI</Link>
           <Link to="/api" className="text-purple-600 hover:underline">API Docs</Link>
+          <Link to="/formatter" className="text-purple-600 hover:underline">Formatter App</Link>
+          <Link to="/code" className="text-purple-600 hover:underline">Code Formatter</Link>
+          <Link to="/json" className="text-purple-600 hover:underline">JSON Formatter</Link>
+          <Link to="/signin" className="text-purple-600 hover:underline">Sign In</Link>
+          <Link to="/signup" className="text-purple-600 hover:underline">Sign Up</Link>
+          <Link to="/subscribe" className="text-purple-600 hover:underline">Subscribe</Link>
+          <Link to="/payment" className="text-purple-600 hover:underline">Payment</Link>
         </div>
       </nav>
 
@@ -53,9 +61,9 @@ function App() {
         <Route path="/color" element={<ColorFeature />} />
         <Route path="/format" element={<FormatConverterPage />} />
         <Route path="/random" element={<randomnogeneratorpage />} />
+        <Route path="/formatter" element={<FormatterApp />} />
         <Route path="/code" element={<CodeFormatter />} />
         <Route path="/json" element={<JsonFormatter />} />
-        <Route path="/formatter" element={<FormatterApp />} />
         <Route path="/api" element={<ApiDocsServicePage />} />
         <Route path="/chat" element={<ChatWithAI />} />
         <Route path="/signin" element={<Signin />} />

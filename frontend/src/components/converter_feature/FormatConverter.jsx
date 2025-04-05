@@ -5,7 +5,6 @@ import Papa from 'papaparse';
 import yaml from 'js-yaml';
 import { xml2js, js2xml } from 'xml-js';
 import { faker } from '@faker-js/faker';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 export default function FormatConverter() {
   const [parsedData, setParsedData] = useState(null);
@@ -141,8 +140,8 @@ export default function FormatConverter() {
       email: faker.internet.email(),
       address: {
         city: faker.location.city(),
-        country: faker.location.country()
-      }
+        country: faker.location.country(),
+      },
     }));
     return users;
   };
@@ -183,35 +182,33 @@ export default function FormatConverter() {
     saveAs(blob, `${fileName}.${selectedFormat}`);
   };
 
-  const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#8dd1e1'];
-
   return (
-    <div className="p-6 max-w-5xl mx-auto bg-slate-900 border border-purple-800 rounded-2xl shadow-[0_0_30px_5px_rgba(168,85,247,0.4)] mt-10 text-white">
-      <h2 className="text-3xl font-bold text-center text-purple-300 mb-6">🚀 Fast Format Converter</h2>
+    <div className="max-w-5xl mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-md transition-colors duration-300 bg-purple-900/20 border-white text-white">
+      <h2 className="text-3xl font-bold text-center text-purple-300 mb-6">Fast Format Converter</h2>
 
       <input
         type="file"
         accept=".json,.csv,.xlsx,.yaml,.yml,.xml"
-        className="mb-4 block w-full p-3 rounded-lg bg-slate-800 text-white"
+        className="mb-4 block w-full p-3 rounded-lg bg-purple-600 text-white"
         onChange={handleFileUpload}
       />
 
       {fileName && uploadedFormat && (
         <div className="mb-4 p-3 rounded-lg bg-green-800 text-green-200 font-semibold">
-          📁 Uploaded File: <span className="text-white">{fileName}.{uploadedFormat}</span>
+          Uploaded File: <span className="text-white">{fileName}.{uploadedFormat}</span>
         </div>
       )}
 
       <label className="block mb-2 font-semibold text-purple-300">Edit Your Data:</label>
       <textarea
-        className="w-full h-64 p-3 mb-6 bg-slate-800 rounded-lg font-mono text-white"
+        className="w-full h-64 p-3 mb-6 bg-purple-500 rounded-lg font-mono text-white"
         value={textAreaValue}
         onChange={(e) => setTextAreaValue(e.target.value)}
       ></textarea>
 
       <label className="block mb-2 font-semibold text-purple-300">Convert To:</label>
       <select
-        className="w-full p-3 mb-6 bg-slate-800 rounded-lg"
+        className="w-full p-3 mb-6 bg-purple-200 text-black rounded-lg"
         value={selectedFormat}
         onChange={(e) => setSelectedFormat(e.target.value)}
       >
@@ -225,58 +222,17 @@ export default function FormatConverter() {
         onClick={convertAndDownload}
         className="w-full bg-purple-700 hover:bg-purple-600 py-3 rounded-xl font-semibold mb-8"
       >
-        🔄 Convert & Download
+        Convert & Download
       </button>
 
       {convertedPreview && (
         <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-2 text-purple-300">🔍 Converted Preview:</h3>
+          <h3 className="text-xl font-semibold mb-2 text-purple-300">Converted Preview:</h3>
           <pre className="max-h-[400px] overflow-auto p-4 bg-slate-800 rounded-lg border border-purple-700 whitespace-pre-wrap">
             {convertedPreview}
           </pre>
         </div>
       )}
-
-      <div className="mt-10 border-t border-purple-600 pt-6">
-        <h3 className="text-xl font-bold text-purple-300 mb-4">🧪 Generate Sample Data</h3>
-        <div className="flex flex-col md:flex-row gap-4">
-          <select
-            className="p-3 bg-slate-800 rounded-lg"
-            value={selectedFormat}
-            onChange={(e) => setSelectedFormat(e.target.value)}
-          >
-            <option value="json">JSON</option>
-            <option value="csv">CSV</option>
-            <option value="yaml">YAML</option>
-            <option value="xml">XML</option>
-          </select>
-
-          <button
-            onClick={() => generateSampleData(selectedFormat)}
-            className="bg-green-700 hover:bg-green-600 py-3 px-4 rounded-lg font-semibold"
-          >
-            ➕ Generate Sample
-          </button>
-
-          {sampleGenerated && (
-            <button
-              onClick={handleDownloadSample}
-              className="bg-blue-700 hover:bg-blue-600 py-3 px-4 rounded-lg font-semibold"
-            >
-              📥 Download Sample
-            </button>
-          )}
-        </div>
-
-        {sampleGenerated && samplePreview && (
-          <div className="mt-6">
-            <h3 className="text-xl font-semibold mb-2 text-purple-300">👀 Sample Preview:</h3>
-            <pre className="max-h-[400px] overflow-auto p-4 bg-slate-800 rounded-lg border border-purple-700 whitespace-pre-wrap">
-              {samplePreview}
-            </pre>
-          </div>
-        )}
-      </div>
     </div>
   );
-}
+}3
