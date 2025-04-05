@@ -1,3 +1,4 @@
+import ApiDocsServicePage from './pages/api_feature/ApiDocsServicePage'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import GraphicGenerator from './pages/ImgGraphicConverter/GraphicGenerator';
@@ -19,6 +20,7 @@ function App() {
         <Route path="/graphic" element={<GraphicGenerator />} />
         <Route path="/image" element={<ImageConverter />} />
         <Route path="/color" element={<ColorFeature />} />
+        <Route path="/api" element={<ApiDocsServicePage />} />
       </Routes>
     </Router>
   );
