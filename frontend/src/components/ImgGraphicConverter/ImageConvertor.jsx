@@ -69,9 +69,9 @@ const ImageConverter = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-purple-400 to-black p-6">
       <div className="max-w-3xl mx-auto mt-10 p-8 bg-white rounded-3xl shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-purple-700">Image Converter</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-purple-700">🖼️ Image Converter</h2>
 
-        {/* Upload Options */}
+        {/* Drag & Drop or Browse */}
         <div
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
@@ -81,7 +81,7 @@ const ImageConverter = () => {
           {imagePreview ? (
             <img src={imagePreview} alt="Preview" className="max-h-60 mx-auto rounded" />
           ) : (
-            <p className="text-gray-500">Drag & drop an image here or click to browse</p>
+            <p className="text-gray-500">📂 Drag & drop an image here or click to browse</p>
           )}
           <input
             type="file"
@@ -92,7 +92,7 @@ const ImageConverter = () => {
           />
         </div>
 
-        {/* Upload via URL */}
+        {/* URL Input */}
         <input
           type="text"
           placeholder="Or paste image URL (https://...)"
@@ -100,7 +100,7 @@ const ImageConverter = () => {
           className="w-full px-4 py-2 bg-purple-100 rounded-3xl mb-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
 
-        {/* Format Selector */}
+        {/* Format Dropdown */}
         <div className="flex items-center gap-4 mb-6">
           <label className="font-medium text-sm text-gray-700">Convert to:</label>
           <select
@@ -124,7 +124,7 @@ const ImageConverter = () => {
           Convert Image
         </button>
 
-        {/* Converted Output */}
+        {/* Output */}
         {convertedURL && (
           <div className="mt-8 text-center">
             <img src={convertedURL} alt="Converted" className="mb-4 rounded shadow max-h-60 mx-auto" />
