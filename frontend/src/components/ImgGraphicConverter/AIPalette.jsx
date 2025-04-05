@@ -28,25 +28,25 @@ const AIPalette = ({ onApply }) => {
       const encodedBody = JSON.stringify({
         contents: [{ parts: [{ text: `Generate a color palette for: ${prompt}. Return 6 hex codes only.` }] }]
       });
-  
+
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`;
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-  
+
       const res = await fetch(proxyUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: encodedBody
       });
-  
+
       const result = await res.json();
       console.log('Gemini raw response:', result); // 🔍 Add this
-      
+
       const text = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
       console.log('Extracted text:', text); // 🔍 Add this
-      
+
       const hexCodes = text.match(/#(?:[0-9a-fA-F]{6})/g) || [];
-      
-  
+
+
       if (hexCodes.length) {
         onApply(hexCodes);
       } else {
@@ -58,8 +58,8 @@ const AIPalette = ({ onApply }) => {
     }
     setLoading(false);
   };
-  
-  
+
+
 
   return (
     <div className="mt-10 p-6 bg-white rounded-xl shadow-md">
