@@ -1,3 +1,8 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import TextFormatter from './components/TextFormatter';
+import CodeFormatter from './components/CodeFormatter';
+import JsonFormatter from './components/JsonFormatter';
+import FormatterApp from './components/FormatterApp';
 import ApiDocsServicePage from './pages/api_feature/ApiDocsServicePage'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -21,6 +26,9 @@ function App() {
         <Route path="/image" element={<ImageConverter />} />
         <Route path="/color" element={<ColorFeature />} />
         <Route path="/api" element={<ApiDocsServicePage />} />
+        <Route path="/code" element={<CodeFormatter />} />
+        <Route path="/json" element={<JsonFormatter/>}/>
+        <Route path="/format" element={<FormatterApp/>}/>
       </Routes>
     </Router>
   );
