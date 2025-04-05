@@ -1,29 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import xmlFormatter from 'xml-formatter';
 import yaml from 'js-yaml';
 
-function FormatterApp() {
+export default function FormatterApp() {
   const [inputText, setInputText] = useState('');
   const [formattedOutput, setFormattedOutput] = useState('');
   const [isValid, setIsValid] = useState(true);
   const [validationMessage, setValidationMessage] = useState('');
   const [formatType, setFormatType] = useState('json');
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') setDarkMode(true);
+  }, []);
+
+  const isInvalidYamlValue = (value) => value === null || value === undefined;
 
   const handleInputChange = (e) => {
     setInputText(e.target.value);
     setValidationMessage('');
   };
-
-  const isLikelyJsonStructure = (text) => {
-    try {
-      JSON.parse(text);
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
-  const isInvalidYamlValue = (value) => value === null || value === undefined;
 
   const handleFormat = () => {
     try {
@@ -39,11 +36,9 @@ function FormatterApp() {
           output = xmlFormatter(inputText, { indentation: '  ', collapseContent: true });
           break;
         case 'yaml': {
-          // Normalize YAML: convert single-line key:value pairs to multi-line YAML
           const withNewlines = inputText
             .replace(/(\s*)(\S+?:\S+)(?=\s|$)/g, '\n$2')
             .trim();
-
           const parsedYaml = yaml.load(withNewlines);
           if (isInvalidYamlValue(parsedYaml)) throw new Error("Invalid YAML content.");
           output = yaml.dump(parsedYaml, { indent: 2 });
@@ -57,11 +52,11 @@ function FormatterApp() {
       }
       setFormattedOutput(output);
       setIsValid(true);
-      setValidationMessage('Valid ' + formatType.toUpperCase());
+      setValidationMessage('✅ Valid ' + formatType.toUpperCase());
     } catch (err) {
       setFormattedOutput('Invalid input');
       setIsValid(false);
-      setValidationMessage(`Invalid ${formatType.toUpperCase()} format`);
+      setValidationMessage(`❌ Invalid ${formatType.toUpperCase()} format`);
     }
   };
 
@@ -80,90 +75,78 @@ function FormatterApp() {
           const withNewlines = inputText
             .replace(/(\s*)(\S+?:\S+)(?=\s|$)/g, '\n$2')
             .trim();
-
           const parsedYaml = yaml.load(withNewlines);
           if (isInvalidYamlValue(parsedYaml)) throw new Error("Invalid YAML content.");
           break;
         }
         case 'markdown':
-          // Basic check – assume valid
           break;
         default:
           throw new Error('Unsupported format');
       }
 
       setIsValid(true);
-      setValidationMessage('Valid ' + formatType.toUpperCase());
+      setValidationMessage('✅ Valid ' + formatType.toUpperCase());
     } catch (err) {
       setIsValid(false);
-      setValidationMessage(`Invalid ${formatType.toUpperCase()} format`);
+      setValidationMessage(`❌ Invalid ${formatType.toUpperCase()} format`);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold mb-4">Universal Formatter & Validator</h1>
+    <div className="max-w-5xl mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-md transition-colors duration-300 bg-purple-900/20 border-white text-white">
+      <h2 className="text-3xl font-bold text-center text-purple-300 mb-6">Universal Formatter & Validator</h2>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Select Format:</label>
-          <select
-            value={formatType}
-            onChange={(e) => setFormatType(e.target.value)}
-            className="block w-full p-2 border border-gray-300 rounded-md"
-          >
-            <option value="json">JSON</option>
-            <option value="xml">XML</option>
-            <option value="yaml">YAML</option>
-            <option value="markdown">Markdown</option>
-          </select>
-        </div>
+      <label className="block mb-2 font-semibold text-purple-300">Select Format:</label>
+      <select
+        value={formatType}
+        onChange={(e) => setFormatType(e.target.value)}
+        className="w-full p-3 mb-6 bg-purple-200 text-black rounded-lg"
+      >
+        <option value="json">JSON</option>
+        <option value="xml">XML</option>
+        <option value="yaml">YAML</option>
+        <option value="markdown">Markdown</option>
+      </select>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Input:</label>
-          <textarea
-            rows="8"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            value={inputText}
-            onChange={handleInputChange}
-          ></textarea>
-        </div>
+      <label className="block mb-2 font-semibold text-purple-300">Input:</label>
+      <textarea
+        rows="10"
+        className="w-full mb-6 p-3 bg-purple-500 text-white font-mono rounded-lg"
+        value={inputText}
+        onChange={handleInputChange}
+      ></textarea>
 
-        <div className="flex gap-4 mb-4">
-          <button
-            onClick={handleFormat}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Format
-          </button>
-          <button
-            onClick={handleValidate}
-            className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Validate
-          </button>
-        </div>
-
-        {validationMessage && (
-          <p className={`text-sm ${isValid ? 'text-green-600' : 'text-red-500'}`}>
-            {validationMessage}
-          </p>
-        )}
-
-        <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">Output:</label>
-          <textarea
-            rows="12"
-            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${
-              !isValid ? 'border-red-500' : ''
-            }`}
-            value={formattedOutput}
-            readOnly
-          ></textarea>
-        </div>
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <button
+          onClick={handleFormat}
+          className="w-full bg-purple-700 hover:bg-purple-600 py-3 rounded-xl font-semibold"
+        >
+          Format
+        </button>
+        <button
+          onClick={handleValidate}
+          className="w-full bg-green-700 hover:bg-green-600 py-3 rounded-xl font-semibold"
+        >
+          Validate
+        </button>
       </div>
+
+      {validationMessage && (
+        <p className={`mb-4 font-semibold ${isValid ? 'text-green-400' : 'text-red-400'}`}>
+          {validationMessage}
+        </p>
+      )}
+
+      <label className="block mb-2 font-semibold text-purple-300">Output:</label>
+      <textarea
+        rows="12"
+        className={`w-full p-3 dark:bg-purple-600 text-white font-mono rounded-lg border ${
+          isValid ? 'border-purple-700' : 'border-red-500'
+        }`}
+        value={formattedOutput}
+        readOnly
+      ></textarea>
     </div>
   );
 }
-
-export default FormatterApp;

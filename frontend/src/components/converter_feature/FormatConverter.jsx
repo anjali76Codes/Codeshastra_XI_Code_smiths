@@ -184,7 +184,7 @@ export default function FormatConverter() {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-md transition-colors duration-300 bg-purple-900/20 border-white text-white">
-      <h2 className="text-3xl font-bold text-center text-purple-300 mb-6">Fast Format Converter</h2>
+      <h2 className="text-3xl font-bold text-center text-purple-500 mb-6">Fast Format Converter</h2>
 
       <input
         type="file"

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -14,20 +14,28 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     AOS.init({ once: true, duration: 800 });
   }, []);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    // Here you can implement search functionality, like filtering features.
+    // Right now, it just updates the searchQuery state.
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0d1117] to-[#161b22] text-white font-sans">
       <header className="w-full border-b border-gray-800 bg-[#0d1117]">
         <div className="container mx-auto px-6 py-6 flex justify-between items-center">
-          <h1 className="text-2xl font-extrabold tracking-tight">ToolBoxHub</h1>
+          {/* <h1 className="text-2xl font-extrabold tracking-tight">ToolBoxHub</h1>
           <nav className="space-x-8 text-sm font-medium text-gray-400">
             <a href="#features" className="hover:text-white transition">Features</a>
             <a href="#pricing" className="hover:text-white transition">Pricing</a>
             <a href="#get-started" className="hover:text-white transition">Get Started</a>
-          </nav>
+          </nav> */}
         </div>
       </header>
 
@@ -38,6 +46,18 @@ export default function LandingPage() {
         <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
           Boost your productivity with ToolBoxHub — a centralized, user-friendly hub for all your favorite web utilities.
         </p>
+
+        {/* Search Bar - Positioned right above the "Get Started for Free" button */}
+        <div className="max-w-lg mx-auto mb-8">
+          <input
+            type="text"
+            placeholder="Search features..."
+            value={searchQuery}
+            onChange={handleSearch}
+            className="w-full px-6 py-3 rounded-full bg-[#161b22] border border-gray-800 text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+
         <button
           className="bg-purple-600 hover:bg-purple-700 text-white font-semibold text-lg px-8 py-4 rounded-3xl shadow-md transition duration-200"
           id="get-started"
@@ -50,7 +70,7 @@ export default function LandingPage() {
       <section id="features" className="container mx-auto px-6 py-24">
         <h3 className="text-4xl font-bold text-center mb-16" data-aos="fade-up">Why ToolBoxHub?</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {[
+          {[  
             { icon: <RocketIcon />, title: "Boosted Productivity", desc: "Access formatters, converters, and editors all in one tab.", color: "text-purple-400" },
             { icon: <ShieldCheckIcon />, title: "Secure & Scalable", desc: "Designed for personal & professional workflows.", color: "text-green-400" },
             { icon: <CodeIcon />, title: "Code & Text Formatters", desc: "JSON, XML, Markdown, HTML/CSS/JS — all beautified & validated.", color: "text-blue-400" },
@@ -76,7 +96,7 @@ export default function LandingPage() {
       <section className="container mx-auto px-6 py-24">
         <h3 className="text-4xl font-bold text-center mb-16" data-aos="fade-up">Extended Tools & Productivity Suite</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {[
+          {[  
             { icon: <BarChartIcon />, title: "Analytics & SEO", desc: "Generate meta tags, sitemaps & run keyword analysis.", color: "text-yellow-400" },
             { icon: <MusicIcon />, title: "Audio & Video Tools", desc: "Trim, convert, and synthesize media content easily.", color: "text-indigo-400" },
             { icon: <MessageCircleIcon />, title: "User Requested Features", desc: "We build what you need. Send us your requests.", color: "text-orange-400" },

@@ -1,6 +1,6 @@
 import React from 'react';
 import ColorTool from '../../components/ImgGraphicConverter/ColorTool';
-import AIPalette from '../../components/ImgGraphicConverter/AIPalette';
+// import AIPalette from '../../components/ImgGraphicConverter/AIPalette';
 
 const ColorFeature = () => {
   return (

@@ -5,7 +5,7 @@ import CodeFormatterPage from './CodeFormatterPage';
 
 const tabs = [
   { id: 'format', label: 'Universal Converter' },
-  { id: 'formatter', label: 'Data Formatter' },
+  { id: 'formatter', label: 'Text Formatter' },
   { id: 'code', label: 'Code Beautifier' },
 ];
 
