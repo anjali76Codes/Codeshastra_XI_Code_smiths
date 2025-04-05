@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import TextFormatter from './components/TextFormatter';
+import CodeFormatter from './components/CodeFormatter';
+import JsonFormatter from './components/JsonFormatter';
+import FormatterApp from './components/FormatterApp';
+
+
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="min-h-screen bg-gray-100 p-6">
+        <main className="w-full max-w-5xl mx-auto">
+          <Routes>
+            <Route path="/" element={<TextFormatter />} />
+            <Route path="/code" element={<CodeFormatter />} />
+            <Route path="/json" element={<JsonFormatter/>}/>
+            <Route path="/format" element={<FormatterApp/>}/>
+          </Routes>
+        </main>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

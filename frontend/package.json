@@ -10,8 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "fast-xml-parser": "^5.2.0",
+    "js-yaml": "^4.1.0",
+    "jsonlint-mod": "^1.7.6",
+    "marked": "^15.0.7",
+    "prettier": "^3.5.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.5.0",
+    "xml-formatter": "^3.6.5",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

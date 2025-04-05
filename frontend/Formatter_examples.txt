@@ -1,0 +1,94 @@
+==============================
+          HTML Example
+==============================
+
+-- Before Formatting --
+<div><h1>Hello World</h1><p>This is an unformatted html</p></div>
+
+-- After Formatting --
+<div>
+  <h1>Hello World</h1>
+  <p>This is an unformatted html</p>
+</div>
+
+
+==============================
+          CSS Example
+==============================
+
+-- Before Formatting --
+body{margin:0;padding:0;background:#fff;color:#333}
+h1{font-size:24px;margin-bottom:10px}
+
+-- After Formatting --
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #333;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+
+==============================
+       JavaScript Example
+==============================
+
+-- Before Formatting --
+function hello(name){console.log("Hello, "+name);}
+hello("world");
+
+-- After Formatting --
+function hello(name) {
+  console.log("Hello, " + name);
+}
+
+hello("world");
+
+
+==============================
+          JSON Example
+==============================
+
+-- Before Formatting --
+{"name":"John","age":30,"city":"New York"}
+
+-- After Formatting --
+{
+  "name": "John",
+  "age": 30,
+  "city": "New York"
+}
+
+
+==============================
+          XML Example
+==============================
+
+-- Before Formatting --
+<catalog><book id="bk101"><author>Gambardella, Matthew</author><title>XML Developer's Guide</title></book></catalog>
+
+-- After Formatting --
+<catalog>
+  <book id="bk101">
+    <author>Gambardella, Matthew</author>
+    <title>XML Developer's Guide</title>
+  </book>
+</catalog>
+
+
+==============================
+         YAML Example
+==============================
+
+-- Before Formatting --
+name:John age:30 city:NewYork
+
+-- After Formatting --
+name: John
+age: 30
+city: NewYork
