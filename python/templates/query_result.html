@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Query Results</title>
+  </head>
+  <body>
+    <h1>Query Results</h1>
+    {% if user %}
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <td>{{ user['id'] }}</td>
+      </tr>
+      <tr>
+        <th>Name</th>
+        <td>{{ user['name'] }}</td>
+      </tr>
+      <tr>
+        <th>Age</th>
+        <td>{{ user['age'] }}</td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td>{{ user['email'] }}</td>
+      </tr>
+      <tr>
+        <th>City</th>
+        <td>{{ user['city'] }}</td>
+      </tr>
+      <tr>
+        <th>Country</th>
+        <td>{{ user['country'] }}</td>
+      </tr>
+    </table>
+    {% elif users %}
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Email</th>
+          <th>City</th>
+          <th>Country</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user['id'] }}</td>
+          <td>{{ user['name'] }}</td>
+          <td>{{ user['age'] }}</td>
+          <td>{{ user['email'] }}</td>
+          <td>{{ user['city'] }}</td>
+          <td>{{ user['country'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No results found.</p>
+    {% endif %}
+    <a href="/">Back to Home</a>
+  </body>
+</html>

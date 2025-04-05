@@ -27,6 +27,8 @@
     "internmap": "^2.0.3",
     "js-yaml": "^4.1.0",
     "jsonlint-mod": "^1.7.6",
+    "lokijs": "^1.5.12",
+    "lowdb": "^7.0.1",
     "lucide-react": "^0.487.0",
     "marked": "^15.0.7",
     "papaparse": "^5.5.2",

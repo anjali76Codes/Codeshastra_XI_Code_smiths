@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mock Data - Users</title>
+  </head>
+  <body>
+    <h1>Mock Users</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Email</th>
+          <th>City</th>
+          <th>Country</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user['id'] }}</td>
+          <td>{{ user['name'] }}</td>
+          <td>{{ user['age'] }}</td>
+          <td>{{ user['email'] }}</td>
+          <td>{{ user['city'] }}</td>
+          <td>{{ user['country'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="/query_user">Query User by ID</a><br />
+    <a href="/query_users_by_age">Query Users by Age Range</a><br />
+    <a href="/generate_data">Generate Mock Data</a>
+  </body>
+</html>

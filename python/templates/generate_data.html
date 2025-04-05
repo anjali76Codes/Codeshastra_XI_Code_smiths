@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generate Mock Data</title>
+  </head>
+  <body>
+    <h1>Generate Mock Data</h1>
+    <form action="/generate_data" method="POST">
+      <label for="num_records">Number of Records:</label>
+      <input type="number" name="num_records" value="100" min="1" /><br /><br />
+
+      <label for="columns">Select Columns:</label><br />
+      <input type="checkbox" name="columns" value="id" checked /> ID
+      <input type="checkbox" name="columns" value="name" checked /> Name
+      <input type="checkbox" name="columns" value="age" checked /> Age
+      <input type="checkbox" name="columns" value="email" checked /> Email
+      <input type="checkbox" name="columns" value="city" checked /> City
+      <input type="checkbox" name="columns" value="country" checked />
+      Country<br /><br />
+
+      <label for="custom_columns">Add Custom Attributes:</label><br />
+      <input type="checkbox" name="custom_columns" value="custom_attribute_1" />
+      Custom Attribute 1<br />
+      <input type="checkbox" name="custom_columns" value="custom_attribute_2" />
+      Custom Attribute 2<br /><br />
+
+      <button type="submit">Generate Data</button>
+    </form>
+  </body>
+</html>
