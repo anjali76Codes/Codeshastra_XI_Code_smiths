@@ -51,13 +51,13 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
     };
 
     return (
-        <div className="w-1/3 bg-[#1e1e1e] rounded-lg p-4 ml-4 shadow-lg border border-gray-700 flex flex-col" style={{ maxHeight: '85vh' }}>
+        <div className="w-1/3 bg-[#1e1e1e] p-4 ml-4 shadow-lg border border-purple-700 flex flex-col min-h-screen" style={{ maxHeight: '85vh' }}>
             {/* Language Tabs */}
             <div className="flex space-x-2 mb-4">
                 {Object.keys(languageOptions).map((lang) => (
                     <button
                         key={lang}
-                        className={`px-3 py-1 rounded-md text-sm font-medium capitalize transition ${activeLang === lang ? 'bg-gray-700 text-white' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                        className={`px-3 py-1 rounded-3xl text-sm font-medium capitalize transition ${activeLang === lang ? 'bg-purple-700 text-white' : 'bg-purple-800/50 text-purple-300 hover:bg-purple-500'
                             }`}
                         onClick={() => setActiveLang(lang)}
                     >
@@ -71,7 +71,7 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
                 <select
                     value={requestType}
                     onChange={(e) => setRequestType(e.target.value)}
-                    className="text-sm bg-gray-800 text-white border border-gray-600 rounded px-2 py-1"
+                    className="text-sm bg-purple-800 text-white border border-purple-800 rounded-3xl px-2 py-1"
                 >
                     {languageOptions[activeLang].map((type) => (
                         <option key={type} value={type}>
@@ -102,15 +102,15 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
             </div>
 
             {/* Footer Actions */}
-            <div className="pt-2 border-t border-gray-600 flex justify-between">
+            <div className="pt-2 border-t border-purple-800 flex justify-between">
                 <button
-                    className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1 rounded"
+                    className="bg-purple-700 hover:bg-purple-800 text-white text-sm px-3 py-1 rounded-3xl"
                     onClick={handleCopy}
                 >
                     Copy
                 </button>
                 <button
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded"
+                    className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-3 py-1 rounded-3xl"
                     onClick={handleRun}
                 >
                     Run this code
@@ -119,14 +119,15 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
 
             {/* Output Viewer */}
             {output && (
-                <div className="mt-4 bg-gray-900 text-sm text-gray-100 p-3 rounded max-h-60 overflow-y-auto border border-gray-700">
-                    <pre>{JSON.stringify(output, null, 2)}</pre>
+                <div className="mt-4 bg-purple-900 text-sm text-purple-100 p-3 rounded-3xl max-h-60 overflow-y-auto border border-purple-700">
                     <button
-                        className="mt-2 bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded"
+                        className="mt-2 bg-purple-950 hover:bg-purple-700 text-white border-2 font-bold border-purple-200 text-md px-3 py-1 rounded-3xl"
                         onClick={handleDownload}
                     >
                         Download JSON
                     </button>
+                    <pre>{JSON.stringify(output, null, 2)}</pre>
+                    
                 </div>
             )}
         </div>

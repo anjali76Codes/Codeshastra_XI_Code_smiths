@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import QRCode from 'react-qr-code';
 
-const QRGenerator = () => {
+const QRGenerator = ({ isDarkMode }) => {
   const [link, setLink] = useState('');
   const qrRef = useRef();
 
@@ -35,21 +35,37 @@ const QRGenerator = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-md">
+    <div className={`max-w-md mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-md transition-colors duration-300
+      ${isDarkMode
+        ? 'bg-purple-900/20 border-white text-white'
+        : 'bg-purple-300 border-purple-200 text-black'
+      }`}
+    >
       <h2 className="text-2xl font-semibold mb-4 text-center">QR Code Generator</h2>
       <input
         type="text"
         placeholder="Enter a URL"
         value={link}
         onChange={(e) => setLink(e.target.value)}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className={`w-full px-4 py-2 rounded-3xl mb-4 focus:outline-none focus:ring-2
+          ${isDarkMode
+            ? 'bg-purple-900/80 text-white focus:ring-purple-300'
+            : 'bg-purple-100 text-black focus:ring-blue-400'
+          }`}
       />
       {link && (
-        <div className="flex flex-col items-center mt-4 bg-white p-4 rounded-lg" ref={qrRef}>
-          <QRCode value={link} size={256} bgColor="#ffffff" fgColor="#000000" />
+        <div className={`flex flex-col items-center mt-4 p-4 rounded-lg
+          ${isDarkMode ? 'bg-gray-100' : 'bg-gray-100'}`} ref={qrRef}
+        >
+          <QRCode
+            value={link}
+            size={256}
+            bgColor={isDarkMode ? '#1f1f1f' : '#ffffff'}
+            fgColor={isDarkMode ? '#ffffff' : '#000000'}
+          />
           <button
             onClick={handleDownload}
-            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-3xl hover:bg-purple-700 transition"
           >
             Download QR
           </button>

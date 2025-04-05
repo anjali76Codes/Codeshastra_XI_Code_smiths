@@ -1,12 +1,12 @@
 import React from 'react';
 import apiData from '../../data/apidata';
 
-const apiRoutes = Object.keys(apiData); // ✅ Use real keys from your data
+const apiRoutes = Object.keys(apiData); // Use real keys from your data
 
 const PublicApiSidebar = ({ onSelect, selected }) => {
     return (
         <aside className="w-64 h-screen bg-[#111827] text-white p-4">
-            <h2 className="text-xl font-bold mb-6">📢 Public APIs</h2>
+            <h2 className="text-xl font-bold mb-6">Public APIs</h2>
             <ul className="space-y-2">
                 {apiRoutes.map((route, index) => (
                     <li
@@ -16,7 +16,7 @@ const PublicApiSidebar = ({ onSelect, selected }) => {
                             }`}
                     >
                         <span>{route}</span>
-                        <span className="bg-green-500 text-sm text-black px-2 py-0.5 rounded-full font-semibold">GET</span>
+                        <span className="bg-purple-500 text-sm text-black px-2 py-0.5 rounded-full font-semibold">GET</span>
                     </li>
                 ))}
             </ul>
