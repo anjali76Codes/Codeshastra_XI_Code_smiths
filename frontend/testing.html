@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terminal Simulation</title>
+    <link rel="stylesheet" href="node_modules/@xterm/xterm/css/xterm.css" />
+    <script src="node_modules/@xterm/xterm/lib/xterm.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 10px;
+        background-color: #1e1e1e;
+      }
+      #terminal {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="terminal"></div>
+    <script>
+      const term = new Terminal({
+        cursorBlink: true,
+        fontSize: 14,
+        fontFamily: 'Menlo, Monaco, "Courier New", monospace',
+        theme: {
+          background: "#000000",
+          foreground: "#ffffff",
+        },
+      });
+
+      term.open(document.getElementById("terminal"));
+
+      // Initial greeting
+      term.writeln("Welcome to the simulated terminal!");
+      term.writeln('Type "help" to see available commands.');
+
+      // File system simulation
+      const fileSystem = {
+        "/home/user": {
+          type: "dir",
+          content: {
+            "file1.txt": { type: "file", content: "This is file 1" },
+            "file2.txt": { type: "file", content: "This is file 2" },
+            folder1: {
+              type: "dir",
+              content: {
+                "nested_file.txt": { type: "file", content: "I am nested" },
+              },
+            },
+          },
+        },
+      };
+
+      let currentDir = "/home/user";
+      let commandHistory = [];
+      let historyIndex = -1;
+      let currentInput = "";
+      let cursorPosition = 0;
+
+      function getCurrentDirObject() {
+        const pathParts = currentDir.split("/").filter(Boolean);
+        let current = fileSystem;
+
+        // Navigate to root
+        if (pathParts.length === 0) return fileSystem["/"];
+
+        for (const part of pathParts) {
+          if (!current[part] && !current["/" + pathParts.join("/")]) {
+            return null;
+          }
+
+          if (current["/" + pathParts.join("/")]) {
+            return current["/" + pathParts.join("/")];
+          }
+
+          current = current[part].content;
+        }
+
+        return current;
+      }
+
+      term.prompt = () => {
+        term.write("\r\n$ ");
+      };
+
+      // Buffer for the current line
+      let inputBuffer = "";
+
+      term.onData((e) => {
+        const printable = !e.altKey && !e.ctrlKey && !e.metaKey;
+
+        if (e.charCodeAt(0) === 13) {
+          // Enter key
+          // Process the command
+          term.write("\r\n");
+          if (inputBuffer.trim().length > 0) {
+            processCommand(inputBuffer.trim());
+            commandHistory.push(inputBuffer.trim());
+            historyIndex = commandHistory.length;
+          }
+          inputBuffer = "";
+          cursorPosition = 0;
+          term.prompt();
+        } else if (e.charCodeAt(0) === 127) {
+          // Backspace
+          if (inputBuffer.length > 0 && cursorPosition > 0) {
+            inputBuffer =
+              inputBuffer.substring(0, cursorPosition - 1) +
+              inputBuffer.substring(cursorPosition);
+            cursorPosition--;
+
+            // Redraw the entire line
+            term.write("\r$ " + " ".repeat(inputBuffer.length + 1)); // Clear line
+            term.write("\r$ " + inputBuffer); // Rewrite input
+
+            // Move cursor back to position
+            if (cursorPosition < inputBuffer.length) {
+              term.write(
+                "\u001b[" + (inputBuffer.length - cursorPosition) + "D"
+              );
+            }
+          }
+        } else if (e === "\u001b[A") {
+          // Up arrow - command history
+          if (commandHistory.length > 0 && historyIndex > 0) {
+            historyIndex--;
+            inputBuffer = commandHistory[historyIndex];
+            cursorPosition = inputBuffer.length;
+
+            // Clear line and rewrite
+            term.write("\r$ " + " ".repeat(100)); // Clear line with enough spaces
+            term.write("\r$ " + inputBuffer);
+          }
+        } else if (e === "\u001b[B") {
+          // Down arrow - command history
+          if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            inputBuffer = commandHistory[historyIndex];
+          } else {
+            historyIndex = commandHistory.length;
+            inputBuffer = "";
+          }
+          cursorPosition = inputBuffer.length;
+
+          // Clear line and rewrite
+          term.write("\r$ " + " ".repeat(100)); // Clear line
+          term.write("\r$ " + inputBuffer);
+        } else if (e === "\u001b[C") {
+          // Right arrow
+          if (cursorPosition < inputBuffer.length) {
+            cursorPosition++;
+            term.write(e);
+          }
+        } else if (e === "\u001b[D") {
+          // Left arrow
+          if (cursorPosition > 0) {
+            cursorPosition--;
+            term.write(e);
+          }
+        } else if (printable) {
+          // Insert character at cursor position
+          inputBuffer =
+            inputBuffer.substring(0, cursorPosition) +
+            e +
+            inputBuffer.substring(cursorPosition);
+          cursorPosition++;
+
+          // Redraw from cursor position to end
+          term.write(e + inputBuffer.substring(cursorPosition));
+
+          // Move cursor back to position
+          if (cursorPosition < inputBuffer.length) {
+            term.write("\u001b[" + (inputBuffer.length - cursorPosition) + "D");
+          }
+        }
+      });
+
+      function processCommand(input) {
+        const args = input.split(" ");
+        const command = args[0];
+
+        switch (command) {
+          case "pwd":
+            term.writeln(currentDir);
+            break;
+
+          case "ls":
+            const target = args[1] || ".";
+            let dirToList = currentDir;
+
+            if (target !== ".") {
+              if (target.startsWith("/")) {
+                dirToList = target;
+              } else {
+                dirToList = `${currentDir}/${target}`.replace(/\/\//g, "/");
+              }
+            }
+
+            const dirObj = getDirectoryAtPath(dirToList);
+            if (!dirObj) {
+              term.writeln(
+                `ls: cannot access '${target}': No such file or directory`
+              );
+              break;
+            }
+
+            const contents = Object.keys(dirObj.content || {});
+            if (contents.length === 0) {
+              term.writeln(""); // Empty directory
+            } else {
+              term.writeln(contents.join("  "));
+            }
+            break;
+
+          case "cd":
+            const newDir = args[1] || "/home/user"; // Default to home if no argument
+
+            if (newDir === "..") {
+              // Go up one directory
+              const parts = currentDir.split("/").filter(Boolean);
+              if (parts.length > 0) {
+                parts.pop();
+                currentDir = parts.length ? "/" + parts.join("/") : "/";
+              }
+            } else if (newDir === "~" || newDir === "") {
+              currentDir = "/home/user";
+            } else if (newDir.startsWith("/")) {
+              // Absolute path
+              const dirObj = getDirectoryAtPath(newDir);
+              if (dirObj && dirObj.type === "dir") {
+                currentDir = newDir;
+              } else {
+                term.writeln(`cd: ${newDir}: No such directory`);
+              }
+            } else {
+              // Relative path
+              const newPath = `${currentDir}/${newDir}`.replace(/\/\//g, "/");
+              const dirObj = getDirectoryAtPath(newPath);
+              if (dirObj && dirObj.type === "dir") {
+                currentDir = newPath;
+              } else {
+                term.writeln(`cd: ${newDir}: No such directory`);
+              }
+            }
+            break;
+
+          case "mkdir":
+            if (!args[1]) {
+              term.writeln("mkdir: missing operand");
+              break;
+            }
+
+            let dirPath = args[1];
+            if (!dirPath.startsWith("/")) {
+              dirPath = `${currentDir}/${dirPath}`.replace(/\/\//g, "/");
+            }
+
+            const parentPath = dirPath.substring(0, dirPath.lastIndexOf("/"));
+            const dirName = dirPath.substring(dirPath.lastIndexOf("/") + 1);
+
+            const parentDir = getDirectoryAtPath(parentPath);
+            if (!parentDir) {
+              term.writeln(
+                `mkdir: cannot create directory '${args[1]}': No such file or directory`
+              );
+              break;
+            }
+
+            parentDir.content[dirName] = { type: "dir", content: {} };
+            break;
+
+          case "touch":
+            if (!args[1]) {
+              term.writeln("touch: missing file operand");
+              break;
+            }
+
+            let filePath = args[1];
+            if (!filePath.startsWith("/")) {
+              filePath = `${currentDir}/${filePath}`.replace(/\/\//g, "/");
+            }
+
+            const parentFilePath = filePath.substring(
+              0,
+              filePath.lastIndexOf("/")
+            );
+            const fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+
+            const parentFileDir = getDirectoryAtPath(parentFilePath);
+            if (!parentFileDir) {
+              term.writeln(
+                `touch: cannot touch '${args[1]}': No such file or directory`
+              );
+              break;
+            }
+
+            parentFileDir.content[fileName] = { type: "file", content: "" };
+            break;
+
+          case "cat":
+            if (!args[1]) {
+              term.writeln("cat: missing file operand");
+              break;
+            }
+
+            let catPath = args[1];
+            if (!catPath.startsWith("/")) {
+              catPath = `${currentDir}/${catPath}`.replace(/\/\//g, "/");
+            }
+
+            const fileObj = getFileAtPath(catPath);
+            if (!fileObj) {
+              term.writeln(`cat: ${args[1]}: No such file or directory`);
+            } else if (fileObj.type !== "file") {
+              term.writeln(`cat: ${args[1]}: Is a directory`);
+            } else {
+              term.writeln(fileObj.content);
+            }
+            break;
+
+          case "echo":
+            const echoContent = args.slice(1).join(" ");
+            if (args.includes(">")) {
+              const redirectIndex = args.indexOf(">");
+              const content = args.slice(1, redirectIndex).join(" ");
+              const targetFile = args[redirectIndex + 1];
+
+              if (!targetFile) {
+                term.writeln(
+                  "echo: syntax error near unexpected token `newline'"
+                );
+                break;
+              }
+
+              let filePath = targetFile;
+              if (!filePath.startsWith("/")) {
+                filePath = `${currentDir}/${filePath}`.replace(/\/\//g, "/");
+              }
+
+              const parentPath = filePath.substring(
+                0,
+                filePath.lastIndexOf("/")
+              );
+              const fileName = filePath.substring(
+                filePath.lastIndexOf("/") + 1
+              );
+
+              const parentDir = getDirectoryAtPath(parentPath);
+              if (!parentDir) {
+                term.writeln(
+                  `echo: cannot create file '${targetFile}': No such file or directory`
+                );
+                break;
+              }
+
+              parentDir.content[fileName] = { type: "file", content: content };
+            } else {
+              term.writeln(echoContent);
+            }
+            break;
+
+          case "rm":
+            if (!args[1]) {
+              term.writeln("rm: missing operand");
+              break;
+            }
+
+            let rmPath = args[1];
+            if (!rmPath.startsWith("/")) {
+              rmPath = `${currentDir}/${rmPath}`.replace(/\/\//g, "/");
+            }
+
+            const parentRmPath = rmPath.substring(0, rmPath.lastIndexOf("/"));
+            const itemName = rmPath.substring(rmPath.lastIndexOf("/") + 1);
+
+            const parentRmDir = getDirectoryAtPath(parentRmPath);
+            if (!parentRmDir || !parentRmDir.content[itemName]) {
+              term.writeln(
+                `rm: cannot remove '${args[1]}': No such file or directory`
+              );
+              break;
+            }
+
+            delete parentRmDir.content[itemName];
+            break;
+
+          case "clear":
+            term.clear();
+            break;
+
+          case "help":
+            term.writeln("Available commands:");
+            term.writeln("  pwd      - Print working directory");
+            term.writeln("  ls       - List directory contents");
+            term.writeln("  cd       - Change directory");
+            term.writeln("  mkdir    - Make directory");
+            term.writeln("  touch    - Create empty file");
+            term.writeln("  cat      - Display file contents");
+            term.writeln(
+              "  echo     - Display a line of text (supports > redirect)"
+            );
+            term.writeln("  rm       - Remove file or directory");
+            term.writeln("  clear    - Clear the terminal screen");
+            term.writeln("  help     - Display this help");
+            break;
+
+          default:
+            term.writeln(`${command}: command not found`);
+        }
+      }
+
+      // Helper function to find a directory by path
+      function getDirectoryAtPath(path) {
+        if (path === "/") {
+          return { type: "dir", content: fileSystem };
+        }
+
+        const parts = path.split("/").filter(Boolean);
+        let current = fileSystem;
+
+        for (let i = 0; i < parts.length; i++) {
+          const part = parts[i];
+
+          if (i === 0 && part === "home") {
+            continue; // Skip the 'home' in '/home'
+          }
+
+          if (!current[part] || current[part].type !== "dir") {
+            return null;
+          }
+
+          current = current[part].content;
+        }
+
+        return { type: "dir", content: current };
+      }
+
+      // Helper function to find a file by path
+      function getFileAtPath(path) {
+        const parts = path.split("/").filter(Boolean);
+        const fileName = parts.pop();
+        const dirPath = "/" + parts.join("/");
+
+        const dir = getDirectoryAtPath(dirPath);
+        if (!dir || !dir.content[fileName]) {
+          return null;
+        }
+
+        return dir.content[fileName];
+      }
+
+      // Initialize with prompt
+      term.prompt();
+    </script>
+  </body>
+</html>
