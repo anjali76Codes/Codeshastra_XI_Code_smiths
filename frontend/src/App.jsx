@@ -9,13 +9,8 @@ import GraphicSuite from './pages/ImgGraphicConverter/GraphicGenerator';
 import ImageConverter from './pages/ImgGraphicConverter/ImageConvertor';
 import ColorFeature from './pages/ImgGraphicConverter/Color';
 import FormatConverterPage from "./pages/converter_feature/FormatConverterPage";
+import randomnogeneratorpage from "./pages/RandomGeneratorPage/randomgeneratorpage";
 import LandingPage from "./pages/LandingPage";
-// import AOS from "aos";
-// import "aos/dist/aos.css";
-
-// useEffect(() => {
-//   AOS.init({ once: true, duration: 800 });
-// }, []);
 
 function App() {
   return (
@@ -35,8 +30,11 @@ function App() {
         <Route path="/color" element={<ColorFeature />} />
         <Route path="/api" element={<ApiDocsServicePage />} />
         <Route path="/code" element={<CodeFormatter />} />
+        
+        <Route path="/random" element={<randomnogeneratorpage />} />
         {/* <Route path="/json" element={<JsonFormatter/>}/>
-        <Route path="/format" element={<FormatterApp/>}/> */}
+        <Route path="/format" element={<FormatterApp/>}/>
+        <Route path="/format" element={<FormatConverterPage />} /> */}
         <Route path="/format" element={<FormatConverterPage />} />
 
       </Routes>
