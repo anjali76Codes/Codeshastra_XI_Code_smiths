@@ -26,7 +26,7 @@ function App() {
         <Route path="/color" element={<ColorFeature />} />
         <Route path="/api" element={<ApiDocsServicePage />} />
         <Route path="/code" element={<CodeFormatter />} />
-        {/* <Route path="/json" element={<JsonFormatter/>}/> */}
+        
         <Route path="/format" element={<FormatterApp/>}/>
         <Route path="/network" element={<NetworkUtilities />} />
         <Route path="/password" element={<PasswordGenerator/>} />
