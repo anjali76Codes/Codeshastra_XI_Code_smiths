@@ -36,6 +36,7 @@ import PasswordGenerator from './pages/password_generator/PasswordGenerator';
 import { Terminal } from 'lucide-react';
 import EmbeddedWebsite from './EmbeddedWebsite';
 import MockDataGenerator from './components/sql_feature/MockDataGenerator';
+import QueryMaker from './components/sql_feature/QueryMaker';
 
 function App() {
   return (
@@ -88,6 +89,7 @@ function App() {
         <Route path="/terminal" element={<Terminal />} />
         <Route path="/embed" element={<EmbeddedWebsite />} />
         <Route path="/mockdata" element={<MockDataGenerator />} />
+        <Route path="/query" element={<QueryMaker />} />
       </Routes>
     </Router>
   );

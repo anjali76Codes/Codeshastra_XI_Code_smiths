@@ -68,17 +68,25 @@ def home():
     conn.close()
     return render_template('index.html', users=users)
 
-# Route to query a user by ID
 @app.route('/query_user', methods=['GET', 'POST'])
 def query_user():
     if request.method == 'POST':
-        user_id = request.form['user_id']
+        column = request.form['column']  # Get selected column
+        value = request.form['value']  # Get value for the column
+
+        # Validate the column to ensure it is a valid column name
+        valid_columns = ['name', 'age', 'email', 'city', 'country']
+        if column not in valid_columns:
+            return "Invalid column selected. Please try again."
+
+        # Perform the query
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
-        user = cursor.fetchone()
+        cursor.execute(f'SELECT * FROM users WHERE {column} = ?', (value,))
+        users = cursor.fetchall()
         conn.close()
-        return render_template('query_result.html', user=user)
+
+        return render_template('query_result.html', users=users)
     return render_template('query_user.html')
 
 # Route to query users by age range
@@ -94,6 +102,28 @@ def query_users_by_age():
         conn.close()
         return render_template('query_result.html', users=users)
     return render_template('query_age.html')
+
+# Route to execute raw SQL query
+@app.route('/execute_sql', methods=['GET', 'POST'])
+def execute_sql():
+    if request.method == 'POST':
+        query = request.form['query']
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(query)
+            result = cursor.fetchall()
+            conn.close()
+
+            # Check if there are results to display
+            if len(result) == 0:
+                return "No results found for the given query."
+            
+            return render_template('query_result.html', users=result)
+        except Exception as e:
+            return f"Error executing query: {e}"
+
+    return render_template('execute_sql.html')
 
 if __name__ == '__main__':
     create_table()  # Create the table if it doesn't exist
