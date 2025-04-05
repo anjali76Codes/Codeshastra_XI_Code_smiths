@@ -1,31 +1,41 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
 import mongoose from 'mongoose';
-import ApiUserRoutes from './routes/apiuser.route.js'
-import cors from 'cors'
+import cors from 'cors';
+
+// Routes
+import ApiUserRoutes from './routes/apiuser.route.js';
+import UserRoutes from './routes/user.route.js';
+import networkRoutes from './routes/network.routes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING).then(() => console.log('✅ MongoDB connected'))
-    .catch(err => console.error('❌ MongoDB connection error:', err));
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Routes
-app.use('/api', ApiUserRoutes); // All user routes will be prefixed with /api
+app.use('/api', ApiUserRoutes);
+app.use('/api/auth', UserRoutes);
+app.use('/api/network', networkRoutes);
+app.use('/api/payment', paymentRoutes);
 
-// Test root route
+// Root route (for testing)
 app.get('/', (req, res) => {
-    res.send('Hello, World from env port!');
+  res.send('Hello, World from env port!');
 });
 
 // Start server
 app.listen(port, () => {
-    console.log(`🚀 Server is running at http://localhost:${port}`);
+  console.log(`🚀 Server is running at http://localhost:${port}`);
 });
