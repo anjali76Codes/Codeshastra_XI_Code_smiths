@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import FormatConverter from '../../components/converter_feature/FormatConverter';
 import FormatterAppPage from './formatterappPage';
 import CodeFormatterPage from './CodeFormatterPage';
+import { useTheme } from '../../components/Theme/themecontext'; // Import the useTheme hook
 
 const tabs = [
   { id: 'format', label: 'Universal Converter' },
@@ -10,28 +11,18 @@ const tabs = [
 ];
 
 const FormatConverterPage = () => {
+  const { isDarkMode, toggleDarkMode } = useTheme(); // Use context for dark mode state
+
   const [activeTab, setActiveTab] = useState('format');
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
 
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'format':
-        return <FormatConverter isDarkMode={isDarkMode}/>;
+        return <FormatConverter isDarkMode={isDarkMode} />;
       case 'formatter':
-        return <FormatterAppPage isDarkMode={isDarkMode}/>;
+        return <FormatterAppPage isDarkMode={isDarkMode} />;
       case 'code':
-        return <CodeFormatterPage isDarkMode={isDarkMode}/>;
+        return <CodeFormatterPage isDarkMode={isDarkMode} />;
       default:
         return null;
     }
@@ -39,22 +30,16 @@ const FormatConverterPage = () => {
 
   return (
     <div className={`${isDarkMode ? 'bg-gradient-to-b from-black via-purple-400 to-black text-white' : 'bg-gradient-to-b from-purple-300 via-white to-purple-300 text-black'} min-h-screen transition-colors duration-300 font-sans`}>
-      
       {/* Header */}
       <header className="w-full py-6 px-6 flex flex-col items-center relative">
         <h1 className="text-4xl font-bold mb-2">Format Converter Suite</h1>
         <p className="text-sm">Convert. Format. Beautify.</p>
 
-        {/* Theme Toggle */}
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="absolute top-6 right-6 px-3 py-1 rounded-full border border-purple-500 text-xs hover:bg-purple-600 transition-all"
-        >
-          {isDarkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
-        </button>
+        {/* Theme Toggle (Handled by Navbar) */}
+        {/* No need for theme toggle here as it's handled globally by ThemeContext */}
 
-        {/* Tabs */}
-        <nav className={`${isDarkMode ? ' bg-purple-900' : ' bg-purple-900/50'} mt-6 flex space-x-4 px-4 py-2 rounded-full shadow-lg"`}>
+        {/* Tab Navigation */}
+        <nav className={`${isDarkMode ? 'bg-purple-900' : 'bg-purple-900/50'} mt-6 flex space-x-4 px-4 py-2 rounded-full shadow-lg`}>
           {tabs.map((tab) => (
             <button
               key={tab.id}

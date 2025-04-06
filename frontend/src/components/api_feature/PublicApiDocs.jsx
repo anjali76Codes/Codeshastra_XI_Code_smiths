@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PublicApiSidebar from './PublicApiSidebar';
 import apiData from '../../data/apidata';
 import PublicApiCodePanel from './PublicApiCodePanel';
+import { useTheme } from '../Theme/themecontext';  // Import the custom hook
 
 const PublicApiDocs = () => {
+    const { isDarkMode, setIsDarkMode } = useTheme();  // Use the custom hook to get theme
     const [selectedApi, setSelectedApi] = useState(Object.keys(apiData)[0]);
-    const [isDarkMode, setIsDarkMode] = useState(true);
-
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) setIsDarkMode(savedTheme === 'dark');
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    }, [isDarkMode]);
 
     const isPlayground = selectedApi === '__playground__';
     const api = apiData[selectedApi];
@@ -30,12 +22,7 @@ const PublicApiDocs = () => {
                         <h1 className="text-3xl font-bold">
                             {isPlayground ? 'Custom API Playground' : api?.title}
                         </h1>
-                        <button
-                            onClick={() => setIsDarkMode(!isDarkMode)}
-                            className="text-xs border border-purple-500 px-3 py-1 rounded-full hover:bg-purple-600 transition-all"
-                        >
-                            {isDarkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
-                        </button>
+                       
                     </div>
 
                     {/* Description */}

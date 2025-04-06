@@ -53,12 +53,16 @@ import TypingTestPage from './pages/TypingTest';
 import MainApp from './components/MainApp';
 import FeaturePage from './pages/FeaturePage';
 
+import { ThemeProvider } from './components/Theme/themecontext';
+
 import './App.css';
 
 function App() {
   return (
     <Router>
+      <ThemeProvider >
       <Navbar />
+      
 
       <Routes>
         {/* Landing & Auth */}
@@ -101,8 +105,11 @@ function App() {
         {/* SEO & Dashboard */}
         <Route path="/seo" element={<MainApp />} />
         <Route path="/dashboard" element={<FeaturePage />} />
+        
       </Routes>
+      </ThemeProvider>
     </Router>
+    
   );
 }
 
