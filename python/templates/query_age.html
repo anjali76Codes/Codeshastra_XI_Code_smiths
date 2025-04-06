@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Query Users by Age</title>
+  </head>
+  <body>
+    <h1>Query Users by Age Range</h1>
+    <form action="/query_users_by_age" method="POST">
+      <label for="min_age">Min Age:</label>
+      <input type="number" name="min_age" id="min_age" required /><br /><br />
+
+      <label for="max_age">Max Age:</label>
+      <input type="number" name="max_age" id="max_age" required /><br /><br />
+
+      <button type="submit">Query</button>
+    </form>
+  </body>
+</html>
