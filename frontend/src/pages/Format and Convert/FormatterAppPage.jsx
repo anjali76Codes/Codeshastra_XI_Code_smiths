@@ -1,9 +1,9 @@
 import React from 'react'
 import FormatterApp from '../../components/validator_feature/FormatterApp'
 
-const FormatterAppPage = () => {
+const FormatterAppPage = ({ isDarkMode }) => {
   return (
-    <div><FormatterApp /></div>
+    <div><FormatterApp isDarkMode={isDarkMode}/></div>
   )
 }
 

@@ -34,7 +34,10 @@ import PaymentPage from './components/login/PaymentPage';
 import LandingPage from './pages/LandingPage';
 import PasswordGenerator from './pages/password_generator/PasswordGenerator';
 import { Terminal } from 'lucide-react';
-import EmbeddedWebsite from './EmbeddedWebsite';
+import EmbeddedWebsite from './components/EmbeddedWebsite';
+import Linuxterminal from './pages/LinuxTerminal';
+
+import './App.css';
 
 function App() {
   return (
@@ -84,8 +87,7 @@ function App() {
         <Route path="/random" element={<RandomNoGeneratorPage />} />
         <Route path="/api" element={<ApiDocsServicePage />} />
         <Route path="/password" element={<PasswordGenerator />} />
-        <Route path="/terminal" element={<Terminal />} />
-        <Route path="/embed" element={<EmbeddedWebsite />} />
+        <Route path="/terminal" element={<Linuxterminal />} />
       </Routes>
     </Router>
   );

@@ -35,10 +35,10 @@ const QRGenerator = ({ isDarkMode }) => {
   };
 
   return (
-    <div className={`max-w-md mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-md transition-colors duration-300
+    <div className={`max-w-md mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-lg transition-colors duration-300
       ${isDarkMode
         ? 'bg-purple-900/20 border-white text-white'
-        : 'bg-purple-300 border-purple-200 text-black'
+        : 'bg-purple-300/80 border-purple-200 text-black'
       }`}
     >
       <h2 className="text-2xl font-semibold mb-4 text-center">QR Code Generator</h2>

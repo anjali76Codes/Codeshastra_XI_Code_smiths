@@ -40,7 +40,7 @@ const GraphicSuite = () => {
   };
 
   return (
-    <div className={`${isDarkMode ? 'bg-gradient-to-b from-black via-purple-400 to-black text-white' : 'bg-gradient-to-b from-purple-200 via-white to-purple-200 text-black'} min-h-screen transition-colors duration-300 font-sans`}>
+    <div className={`${isDarkMode ? 'bg-gradient-to-b from-black via-purple-400 to-black text-white' : 'bg-gradient-to-b from-purple-300 via-white to-purple-300 text-black'} min-h-screen transition-colors duration-300 font-sans`}>
       
       {/* Header */}
       <header className="w-full py-6 px-6 flex flex-col items-center relative">
@@ -56,7 +56,7 @@ const GraphicSuite = () => {
         </button>
 
         {/* Tab Navigation */}
-        <nav className="mt-6 flex space-x-4 bg-purple-700 px-4 py-2 rounded-full shadow-lg">
+        <nav className={`${isDarkMode ? ' bg-purple-900' : ' bg-purple-900/50'} mt-6 flex space-x-4 bg-purple-800 px-4 py-2 rounded-full shadow-lg`}>
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -64,7 +64,7 @@ const GraphicSuite = () => {
               className={`px-4 py-2 rounded-full transition-all duration-200 font-medium ${
                 activeTab === tab.id
                   ? 'bg-white text-purple-700'
-                  : 'text-white hover:bg-purple-600'
+                  : 'text-white hover:bg-purple-800'
               }`}
             >
               {tab.label}

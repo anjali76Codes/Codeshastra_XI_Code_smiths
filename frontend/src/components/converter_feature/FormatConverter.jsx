@@ -6,7 +6,7 @@ import yaml from 'js-yaml';
 import { xml2js, js2xml } from 'xml-js';
 import { faker } from '@faker-js/faker';
 
-export default function FormatConverter() {
+export default function FormatConverter({ isDarkMode }) {
   const [parsedData, setParsedData] = useState(null);
   const [textAreaValue, setTextAreaValue] = useState('');
   const [selectedFormat, setSelectedFormat] = useState('json');
@@ -103,25 +103,21 @@ export default function FormatConverter() {
           convertedStr = JSON.stringify(finalData, null, 2);
           saveAs(new Blob([convertedStr], { type: 'application/json' }), `${fileName}.json`);
           break;
-
         case 'csv':
           finalData = JSON.parse(textAreaValue);
           convertedStr = Papa.unparse(flattenData(finalData));
           saveAs(new Blob([convertedStr], { type: 'text/csv' }), `${fileName}.csv`);
           break;
-
         case 'yaml':
           finalData = JSON.parse(textAreaValue);
           convertedStr = yaml.dump(finalData);
           saveAs(new Blob([convertedStr], { type: 'text/yaml' }), `${fileName}.yaml`);
           break;
-
         case 'xml':
           finalData = JSON.parse(textAreaValue);
           convertedStr = js2xml(finalData, { compact: true, spaces: 2 });
           saveAs(new Blob([convertedStr], { type: 'application/xml' }), `${fileName}.xml`);
           break;
-
         default:
           alert('Invalid format selected');
       }
@@ -176,39 +172,58 @@ export default function FormatConverter() {
     setSamplePreview(generated);
   };
 
-  const handleDownloadSample = () => {
-    if (!textAreaValue) return;
-    const blob = new Blob([textAreaValue], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, `${fileName}.${selectedFormat}`);
-  };
-
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-md transition-colors duration-300 bg-purple-900/20 border-white text-white">
-      <h2 className="text-3xl font-bold text-center text-purple-500 mb-6">Fast Format Converter</h2>
+    <div className={`max-w-5xl mx-auto mt-10 p-6 border-2 rounded-3xl shadow-md backdrop-blur-xl transition-colors duration-300
+      ${isDarkMode ? 'bg-purple-900/20 border-white text-white' : 'bg-purple-100 border-purple-300 text-black'}`}>
 
-      <input
-        type="file"
-        accept=".json,.csv,.xlsx,.yaml,.yml,.xml"
-        className="mb-4 block w-full p-3 rounded-lg bg-purple-600 text-white"
-        onChange={handleFileUpload}
-      />
+      <h2 className={`text-3xl font-bold text-center mb-6 ${isDarkMode ? 'text-purple-300' : 'text-purple-800'}`}>
+        Fast Format Converter
+      </h2>
+
+      {/* Drag and Drop Upload */}
+      <div
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          const file = e.dataTransfer.files[0];
+          if (file) handleFileUpload({ target: { files: [file] } });
+        }}
+        onClick={() => document.getElementById('hidden-file-input').click()}
+        className={`mb-4 cursor-pointer border-dashed border-2 rounded-3xl p-6 text-center transition-colors
+          ${isDarkMode
+            ? 'bg-purple-800/40 border-purple-400 text-white hover:bg-purple-900/60'
+            : 'bg-purple-100 border-purple-400 text-purple-800 hover:bg-purple-200'}`}
+      >
+        <p className="font-semibold">Drag & Drop a file here or click to browse</p>
+        <p className="text-sm mt-1 opacity-50">Accepted: .json, .csv, .xlsx, .yaml, .yml, .xml</p>
+        <input
+          type="file"
+          accept=".json,.csv,.xlsx,.yaml,.yml,.xml"
+          id="hidden-file-input"
+          className="hidden"
+          onChange={handleFileUpload}
+        />
+      </div>
 
       {fileName && uploadedFormat && (
-        <div className="mb-4 p-3 rounded-lg bg-green-800 text-green-200 font-semibold">
-          Uploaded File: <span className="text-white">{fileName}.{uploadedFormat}</span>
+        <div className={`mb-4 p-3 rounded-xl font-semibold 
+          ${isDarkMode ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-800'}`}>
+          Uploaded File: <span className="font-mono">{fileName}.{uploadedFormat}</span>
         </div>
       )}
 
-      <label className="block mb-2 font-semibold text-purple-300">Edit Your Data:</label>
+      <label className={`block mb-2 font-semibold ${isDarkMode ? 'text-purple-300' : 'text-purple-700'}`}>Edit Your Data:</label>
       <textarea
-        className="w-full h-64 p-3 mb-6 bg-purple-500 rounded-lg font-mono text-white"
+        className={`w-full h-64 p-3 font-mono rounded-3xl overflow-auto border-2 
+          ${isDarkMode ? 'bg-black/20 text-white border-purple-400 backdrop-blur-3xl' : 'bg-purple-200 text-black border-purple-300'}`}
         value={textAreaValue}
         onChange={(e) => setTextAreaValue(e.target.value)}
       ></textarea>
 
-      <label className="block mb-2 font-semibold text-purple-300">Convert To:</label>
+      <label className={`block mt-6 mb-2 font-semibold ${isDarkMode ? 'text-purple-300' : 'text-purple-700'}`}>Convert To:</label>
       <select
-        className="w-full p-3 mb-6 bg-purple-200 text-black rounded-lg"
+        className={`w-full p-3 mb-6 rounded-3xl 
+          ${isDarkMode ? 'bg-purple-200 text-black' : 'bg-white text-black border border-purple-300'}`}
         value={selectedFormat}
         onChange={(e) => setSelectedFormat(e.target.value)}
       >
@@ -218,21 +233,33 @@ export default function FormatConverter() {
         <option value="xml">XML</option>
       </select>
 
-      <button
-        onClick={convertAndDownload}
-        className="w-full bg-purple-700 hover:bg-purple-600 py-3 rounded-xl font-semibold mb-8"
-      >
-        Convert & Download
-      </button>
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <button
+          onClick={convertAndDownload}
+          className={`w-full py-3 rounded-3xl font-semibold transition-all
+            ${isDarkMode ? 'bg-purple-700 hover:bg-purple-600 text-white' : 'bg-purple-400 hover:bg-purple-300 text-black border border-purple-500'}`}
+        >
+          Convert & Download
+        </button>
+
+        <button
+          onClick={() => generateSampleData(selectedFormat)}
+          className={`w-full py-3 rounded-3xl font-semibold transition-all
+            ${isDarkMode ? 'bg-purple-800 hover:bg-purple-600 text-white' : 'bg-purple-500 hover:bg-purple-400 text-black border border-purple-600'}`}
+        >
+          Generate Sample
+        </button>
+      </div>
 
       {convertedPreview && (
         <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-2 text-purple-300">Converted Preview:</h3>
-          <pre className="max-h-[400px] overflow-auto p-4 bg-slate-800 rounded-lg border border-purple-700 whitespace-pre-wrap">
+          <h3 className={`text-xl font-semibold mb-2 ${isDarkMode ? 'text-purple-300' : 'text-purple-700'}`}>Converted Preview:</h3>
+          <pre className={`max-h-[400px] overflow-auto p-4 font-mono rounded-xl border 
+            ${isDarkMode ? 'bg-black/20 text-white border-purple-400' : 'bg-purple-200 text-black border-purple-300'}`}>
             {convertedPreview}
           </pre>
         </div>
       )}
     </div>
   );
-}3
+}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CodeFormatter = () => {
+const CodeFormatter = ({ isDarkMode }) => {
   const [language, setLanguage] = useState("html");
   const [inputCode, setInputCode] = useState("");
   const [formattedCode, setFormattedCode] = useState("");
@@ -37,49 +37,72 @@ const CodeFormatter = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-6 border-2 rounded-2xl shadow-lg backdrop-blur-md transition-all duration-300 bg-white/80 dark:bg-slate-900/20 border-gray-300 dark:border-white text-gray-800 dark:text-white">
-      <h2 className="text-3xl font-bold text-center text-purple-500  mb-8">🛠 Code Formatter</h2>
+    <div className={`max-w-5xl mx-auto mt-10 p-6 border-2 rounded-3xl shadow-md backdrop-blur-xl transition-colors duration-300 
+      ${isDarkMode 
+        ? 'bg-purple-900/20 border-white text-white' 
+        : 'bg-purple-100 border-purple-300 text-black'}`}>
+      
+      <h2 className={`text-3xl font-bold text-center mb-6 
+        ${isDarkMode ? 'text-purple-300' : 'text-purple-800'}`}>
+        Code Formatter
+      </h2>
 
-      <div className="mb-6">
-        <label className="block mb-2 font-semibold text-gray-700 dark:text-blue-200">Choose Language:</label>
-        <select
-          className="w-full p-3 rounded-lg bg-gray-100 dark:bg-purple-600 text-white font-semibold"
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-        >
-          <option value="html">HTML</option>
-          <option value="css">CSS</option>
-          <option value="javascript">JavaScript</option>
-        </select>
-      </div>
+      <label className={`block mb-2 font-semibold ${isDarkMode ? 'text-purple-300' : 'text-purple-700'}`}>
+        Choose Language:
+      </label>
+      <select
+        className={`w-full p-3 mb-6 rounded-3xl 
+          ${isDarkMode ? 'bg-purple-200 text-black' : 'bg-white text-black border border-purple-300'}`}
+        value={language}
+        onChange={(e) => setLanguage(e.target.value)}
+      >
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="javascript">JavaScript</option>
+      </select>
 
-      <div className="mb-6">
-        <label className="block mb-2 font-semibold text-gray-700 dark:text-blue-200">Input Code:</label>
-        <textarea
-          className="w-full h-48 p-3 bg-white dark:bg-purple-700 text-black dark:text-white font-mono rounded-lg border border-blue-300 dark:border-blue-700 focus:ring-2 focus:ring-blue-400"
-          value={inputCode}
-          onChange={(e) => setInputCode(e.target.value)}
-          placeholder="Paste your code here..."
-        ></textarea>
-      </div>
+      <section className="space-x-2 grid grid-cols-2">
+        <section>
+          <label className={`block mb-2 font-semibold ${isDarkMode ? 'text-purple-300' : 'text-purple-700'}`}>
+            Input Code:
+          </label>
+          <textarea
+            rows="10"
+            className={`w-full mb-6 p-3 font-mono rounded-3xl overflow-hidden border-2 
+              ${isDarkMode 
+                ? 'bg-black/20 text-white border-purple-400 backdrop-blur-3xl' 
+                : 'bg-purple-800/20 text-black border-purple-300'}`}
+            value={inputCode}
+            onChange={(e) => setInputCode(e.target.value)}
+            placeholder="Paste your code here..."
+          ></textarea>
+        </section>
+
+        <section>
+          <label className={`block mb-2 font-semibold ${isDarkMode ? 'text-purple-300' : 'text-purple-700'}`}>
+            Formatted Output:
+          </label>
+          <textarea
+            rows="10"
+            className={`w-full mb-6 p-3 font-mono rounded-3xl shadow-md overflow-hidden border-2 
+              ${isDarkMode 
+                ? 'bg-black/20 text-white border-purple-800 backdrop-blur-3xl' 
+                : 'bg-purple-800/20 text-black border-purple-400'}`}
+            value={formattedCode}
+            readOnly
+          ></textarea>
+        </section>
+      </section>
 
       <button
-        className="w-full sm:w-auto bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-colors"
+        className={`w-full py-3 rounded-3xl font-semibold transition-all
+          ${isDarkMode 
+            ? 'bg-purple-700 hover:bg-purple-600 text-white border border-purple-400' 
+            : 'bg-purple-400 hover:bg-purple-300 text-black border border-purple-500'}`}
         onClick={handleFormat}
       >
         Format Code
       </button>
-
-      {formattedCode && (
-        <div className="mt-8">
-          <label className="block mb-2 mt-4 font-semibold text-gray-700 dark:text-blue-200">Formatted Code:</label>
-          <textarea
-            className="w-full h-48 p-3 bg-gray-100 dark:bg-slate-800 text-black dark:text-white font-mono rounded-lg border border-green-500"
-            value={formattedCode}
-            readOnly
-          ></textarea>
-        </div>
-      )}
     </div>
   );
 };

@@ -1,17 +1,45 @@
-// components/layout/Navbar.js
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
   const dropdownRef = useRef(null);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleDropdown = (idx) => {
     setActiveDropdown(activeDropdown === idx ? null : idx);
   };
+
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem('theme', newMode ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', newMode);
+  };
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode);
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    document.body.classList.toggle('overflow-x-hidden', menuOpen);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const navLinks = [
     { label: 'Home', path: '/' },
@@ -20,7 +48,7 @@ export default function Navbar() {
       dropdown: [
         { label: 'Graphic Generator', path: '/graphic' },
         { label: 'Image Converter', path: '/image' },
-        { label: 'Color Feature', path: '/color' },
+        // { label: 'Color Feature', path: '/color' },
         { label: 'Chat with AI', path: '/chat' },
       ],
     },
@@ -28,7 +56,6 @@ export default function Navbar() {
       label: 'Format Tools',
       dropdown: [
         { label: 'Format Converter', path: '/format' },
-        
       ],
     },
     {
@@ -50,26 +77,21 @@ export default function Navbar() {
     },
   ];
 
-  useEffect(() => {
-    document.body.classList.toggle('overflow-x-hidden', menuOpen);
-  }, [menuOpen]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setActiveDropdown(null);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   return (
     <nav className="bg-black text-white shadow-lg sticky top-0 z-50 font-medium">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="text-2xl font-bold text-purple-500 tracking-wide">
           ToolSuite
         </Link>
+
+        {/* Theme Toggle */}
+        <button
+          onClick={toggleDarkMode}
+          className="text-white hover:text-purple-400 transition lg:mr-4"
+          title="Toggle dark mode"
+        >
+          {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
 
         {/* Mobile toggle */}
         <div className="lg:hidden">
@@ -92,7 +114,7 @@ export default function Navbar() {
                 </button>
                 {activeDropdown === idx && (
                   <div
-                    className={`absolute top-full mt-2 w-52 bg-white text-black rounded-xl shadow-lg z-50 ${
+                    className={`absolute top-full mt-2 w-52 bg-white text-black rounded-3xl shadow-lg z-50 ${
                       idx === navLinks.length - 1 ? 'right-0 left-auto' : 'left-0'
                     }`}
                   >
@@ -100,7 +122,7 @@ export default function Navbar() {
                       <Link
                         key={i}
                         to={item.path}
-                        className="block px-4 py-2 text-sm hover:bg-purple-100 rounded transition"
+                        className="block px-4 py-2 text-sm hover:bg-purple-100 rounded-3xl transition"
                         onClick={() => setActiveDropdown(null)}
                       >
                         {item.label}
