@@ -29,6 +29,16 @@ import PaymentPage from './components/login/PaymentPage';
 import LandingPage from './pages/LandingPage';
 import PasswordGenerator from './pages/password_generator/PasswordGenerator';
 
+// AES Encryption Page
+import EncryptPage from './pages/EncryptPage';  // Import the new encryption page
+
+// Multiplayer Typing Test Pages
+import RoomSelector from './pages/RoomSelector'; // Import RoomSelector component
+import TypingTestPage from './pages/TypingTest'; // Import TypingTestPage component
+
+import MainApp from './components/MainApp';
+import FeaturePage from './pages/FeaturePage';
+
 function App() {
   return (
     <Router>
@@ -49,6 +59,15 @@ function App() {
         <Route path="/subscribe" element={<SubscriptionPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/password" element={<PasswordGenerator />} />
+        <Route path="/encrypt" element={<EncryptPage />} /> {/* AES Encryption Page */}
+        
+        {/* Multiplayer Typing Test Routes */}
+        <Route path="/room" element={<RoomSelector />} /> {/* RoomSelector Page */}
+        <Route path="/test/:code" element={<TypingTestPage />} /> {/* TypingTestPage Page */}
+        
+        <Route path="/seo" element={<MainApp />} />
+        <Route path="/dashboard" element={<FeaturePage/>} />
+        
       </Routes>
     </Router>
   );

@@ -1,0 +1,23 @@
+
+{
+    "user": {
+      "name": "John Doe",
+      "subscription": {
+        "plan": "Premium",
+        "total_requests": 1000,
+        "remaining_requests": 720,
+        "used_requests": 280
+      },
+      "feature_usage": {
+        "Text Formatter": 120,
+        "CSV & Excel Tools": 80,
+        "API Tools": 60,
+        "Image & Graphic Converters": 50,
+        "Code Formatter": 30,
+        "Password Generator": 15,
+        "Random Number Generator": 20,
+        "Network Utilities": 15
+      }
+    }
+  }
+  
