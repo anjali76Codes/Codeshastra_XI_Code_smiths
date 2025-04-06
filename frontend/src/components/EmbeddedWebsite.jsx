@@ -19,14 +19,14 @@ const EmbeddedWebsite = () => {
   };
 
   return (
-    <div className="relative bg-purple-50/10 backdrop-blur-3xl w-full max-w-2/3 mx-auto aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border border-gray-300">
+    <div className="relative bg-purple-50/10 backdrop-blur-3xl w-full max-w-2/3 mx-auto aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border border-gray-300 ">
       {/* Overlay Label */}
-      <div className="absolute top-3 left-3 z-10 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded-full">
+      <div className="absolute top-8 left-3 z-10 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded-full">
         Linux Terminal (Alpine)
       </div>
 
       {/* File Upload */}
-      <div className="absolute top-3 right-3 z-10 bg-white bg-opacity-70 text-black text-sm px-3 py-1 rounded-full">
+      <div className="absolute top-8 right-3 z-10 bg-white bg-opacity-70 text-black text-sm px-3 py-1 rounded-full">
         <label className="cursor-pointer">
           Upload Key
           <input

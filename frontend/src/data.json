@@ -1,43 +1,64 @@
 {
-    "user": {
-      "subscription": {
-        "plan": "Pro",
-        "used_requests": 1500,
-        "remaining_requests": 500,
-        "total_requests": 2000,
-        "subscribed_features": [
-          "API Requests",
-          "Image Conversion",
-          "Code Validation",
-          "Feature 4",
-          "Feature 5",
-          "Feature 6",
-          "Feature 7",
-          "Feature 8",
-          "Feature 9",
-          "Feature 10"
-        ]
-      },
-      "feature_usage": {
-        "API Requests": 1200,
-        "Image Conversion": 250,
-        "Code Validation": 50,
-        "Feature 4": 100,
-        "Feature 5": 30,
-        "Feature 6": 10,
-        "Feature 7": 0,
-        "Feature 8": 0,
-        "Feature 9": 0,
-        "Feature 10": 10,
-        "Feature 11": 0,
-        "Feature 12": 0,
-        "Feature 13": 0,
-        "Feature 14": 0,
-        "Feature 15": 0
-      },
-      "api_requests": 1200,
-      "images_converted": 250,
-      "code_validated": 50
+  "user": {
+    "name": "Anjali Gupta",
+    "subscription": {
+      "plan": "Pro",
+      "used_requests": 1500,
+      "remaining_requests": 500,
+      "total_requests": 2000,
+      "subscribed_features": [
+        "API Requests",
+        "Image Conversion",
+        "Code Validation",
+        "PDF Generation",
+        "DNS Lookup",
+        "Traceroute",
+        "JSON Formatter",
+        "YAML Validator",
+        "Markdown Formatter",
+        "Base64 Decoder"
+      ]
+    },
+    "feature_usage": {
+      "API Requests": 1200,
+      "Image Conversion": 250,
+      "Code Validation": 50,
+      "PDF Generation": 100,
+      "DNS Lookup": 30,
+      "Traceroute": 10,
+      "JSON Formatter": 0,
+      "YAML Validator": 0,
+      "Markdown Formatter": 0,
+      "Base64 Decoder": 10
+    },
+    "recent_activity": [
+      { "tool": "Image Converter", "timestamp": "2025-04-06T14:30:00Z" },
+      { "tool": "API Client", "timestamp": "2025-04-06T13:45:00Z" },
+      { "tool": "PDF Generator", "timestamp": "2025-04-06T12:00:00Z" },
+      { "tool": "DNS Lookup", "timestamp": "2025-04-05T17:15:00Z" },
+      { "tool": "Markdown Formatter", "timestamp": "2025-04-04T10:05:00Z" }
+    ],
+    "insights": [
+      "You’ve used 75% of your monthly API quota.",
+      "Try YAML Validator for config file linting.",
+      "Markdown Formatter is great for documentation.",
+      "Your image conversions increased by 30% this month."
+    ],
+    "most_frequent_tools": [
+      { "tool": "API Client", "usage": 1200 },
+      { "tool": "Image Converter", "usage": 250 },
+      { "tool": "Code Validator", "usage": 50 }
+    ],
+    "monthly_summary": {
+      "month": "April 2025",
+      "tools_used": 7,
+      "total_actions": 1540,
+      "new_features_tried": 3
+    },
+    "average_usage": {
+      "daily_requests": 60,
+      "weekly_requests": 420,
+      "monthly_requests": 1800
     }
   }
-  
+}
