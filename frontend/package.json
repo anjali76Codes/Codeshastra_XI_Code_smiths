@@ -17,6 +17,7 @@
     "@xterm/xterm": "^5.5.0",
     "aos": "^2.3.4",
     "axios": "^1.8.4",
+    "bcryptjs": "^3.0.2",
     "chart.js": "^4.4.8",
     "class-variance-authority": "^0.7.1",
     "colord": "^2.9.3",

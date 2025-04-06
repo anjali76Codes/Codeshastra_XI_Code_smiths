@@ -41,7 +41,7 @@ const GraphicSuite = () => {
 
   return (
     <div className={`${isDarkMode ? 'bg-gradient-to-b from-black via-purple-400 to-black text-white' : 'bg-gradient-to-b from-purple-300 via-white to-purple-300 text-black'} min-h-screen transition-colors duration-300 font-sans`}>
-      
+
       {/* Header */}
       <header className="w-full py-6 px-6 flex flex-col items-center relative">
         <h1 className="text-4xl font-bold mb-2">Graphic Toolbox</h1>
@@ -61,11 +61,10 @@ const GraphicSuite = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-full transition-all duration-200 font-medium ${
-                activeTab === tab.id
+              className={`px-4 py-2 rounded-full transition-all duration-200 font-medium ${activeTab === tab.id
                   ? 'bg-white text-purple-700'
                   : 'text-white hover:bg-purple-800'
-              }`}
+                }`}
             >
               {tab.label}
             </button>

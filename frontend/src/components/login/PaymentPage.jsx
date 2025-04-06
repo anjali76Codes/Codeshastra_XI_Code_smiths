@@ -1,36 +1,85 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import bcrypt from 'bcryptjs'; // Import bcryptjs
 
 const PaymentPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { plan, price, selectedFeatures } = location.state || {};
     const [loading, setLoading] = useState(false);
     const [paymentSuccessful, setPaymentSuccessful] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [error, setError] = useState(null);
 
-    if (!plan) {
+    // If no plan or price details, show an error
+    if (!plan || !price || !selectedFeatures) {
         return <div className="text-center text-xl font-bold">No plan details found. Please try again.</div>;
     }
 
-    // Handle simulated dummy payment
+    // Simulate generating a 32-bit hash based on the username from the token
+    const generateHash = async (username) => {
+        // Generate a salt
+        const salt = await bcrypt.genSalt(10);
+        // Generate hash from the username
+        const hash = await bcrypt.hash(username, salt);
+        return hash.substring(0, 32); // Take the first 32 characters to simulate a 32-bit hash
+    };
+
     const handlePayment = () => {
         setLoading(true);
 
-        // Simulate a delay for payment processing
-        setTimeout(() => {
-            const isPaymentSuccessful = Math.random() > 0.5; // Simulate success or failure randomly
-
+        // Get the username from the token
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found, user is not logged in.');
+            setError('User is not logged in. Please log in first.');
             setLoading(false);
-            setPaymentSuccessful(isPaymentSuccessful);
-            setModalOpen(true);
+            return;
+        }
 
-            if (!isPaymentSuccessful) {
-                setError('There was an issue with your payment. Please try again.');
-            }
-        }, 2000); // Simulate a 2-second delay for payment processing
+        const username = token; // Assuming the token is the username for simulation
+        generateHash(username).then((userHash) => {
+            console.log(`Generated user hash: ${userHash}`);
+
+            // Simulate a delay for payment processing
+            setTimeout(() => {
+                const isPaymentSuccessful = Math.random() > 0.5; // Simulate success or failure randomly
+
+                setLoading(false);
+                setPaymentSuccessful(isPaymentSuccessful);
+                setModalOpen(true);
+
+                if (!isPaymentSuccessful) {
+                    setError('There was an issue with your payment. Please try again.');
+                    console.error('Payment failed for user:', username);
+                } else {
+                    console.log('Payment successful for user:', username);
+
+                    // Now call the backend API to store the payment data
+                    fetch('http://localhost:3000/api/payment/save-payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username,
+                            token,
+                            paymentHash: userHash,
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Payment data saved:', data);
+                        })
+                        .catch(error => {
+                            console.error('Error saving payment data:', error);
+                        });
+                }
+            }, 2000); // Simulate a 2-second delay for payment processing
+        });
     };
+
 
     useEffect(() => {
         if (price) {
@@ -40,6 +89,7 @@ const PaymentPage = () => {
 
     const handleModalClose = () => {
         setModalOpen(false);
+        navigate('/'); // Redirect to home after closing the modal
     };
 
     if (loading) {
