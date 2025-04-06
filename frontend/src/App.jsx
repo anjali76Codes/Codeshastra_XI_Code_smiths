@@ -37,6 +37,8 @@ import { Terminal } from 'lucide-react';
 import EmbeddedWebsite from './EmbeddedWebsite';
 import MockDataGenerator from './components/sql_feature/MockDataGenerator';
 import QueryMaker from './components/sql_feature/QueryMaker';
+import CommunityHomePage from './pages/community_feature/CommunityHomePage';
+import PostForm from './components/community_feature/PostForm';
 
 function App() {
   return (
@@ -90,6 +92,9 @@ function App() {
         <Route path="/embed" element={<EmbeddedWebsite />} />
         <Route path="/mockdata" element={<MockDataGenerator />} />
         <Route path="/query" element={<QueryMaker />} />
+        <Route path="/mockdata" element={<MockDataGenerator />} />
+        <Route path="/community" element={<CommunityHomePage />} />
+        <Route path="/community/post" element={<PostForm />} />
       </Routes>
     </Router>
   );

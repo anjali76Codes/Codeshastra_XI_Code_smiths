@@ -8,6 +8,7 @@ import ApiUserRoutes from './routes/apiuser.route.js';
 import UserRoutes from './routes/user.route.js';
 import networkRoutes from './routes/network.routes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import postRoutes from './routes/post.routes.js';
 
 // Load environment variables
 dotenv.config();
@@ -29,6 +30,7 @@ app.use('/api', ApiUserRoutes);
 app.use('/api/auth', UserRoutes);
 app.use('/api/network', networkRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/community', postRoutes);
 
 // Root route (for testing)
 app.get('/', (req, res) => {
