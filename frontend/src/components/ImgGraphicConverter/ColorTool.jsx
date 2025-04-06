@@ -3,6 +3,8 @@ import { HexColorPicker } from 'react-colorful';
 import { colord, extend } from 'colord';
 import namesPlugin from 'colord/plugins/names';
 import html2canvas from 'html2canvas';
+import AIPalette from './AIPalette';
+import ChatWithAI from './ChatWithAI';
 
 extend([namesPlugin]);
 
@@ -37,7 +39,6 @@ const ColorTool = () => {
       }
     };
   }, []);
-
 
   const formatColor = (hex) => {
     const c = colord(hex);
@@ -186,6 +187,11 @@ const ColorTool = () => {
 
   return (
     <div className="min-h-screen backdrop-blur-lg border-2 border-purple-100 rounded-3xl p-3">
+      {/* ChatWithAI Component placed at the top */}
+      <div className="mb-10">
+        <ChatWithAI />
+      </div>
+
       {/* Floating Controls */}
       <div className="sticky bg-white shadow-md px-4 py-2 rounded-full flex gap-3 z-50">
         <select
@@ -232,9 +238,7 @@ const ColorTool = () => {
       {/* Sticky Palette */}
       <div
         ref={paletteRef}
-        className={`sticky mt-10 z-40 transition-all duration-300 ease-in-out bg-white rounded-xl overflow-hidden shadow-md flex w-full ${
-          isSticky ? 'h-32' : 'h-80'
-        }`}
+        className={`sticky mt-10 z-40 transition-all duration-300 ease-in-out bg-white rounded-xl overflow-hidden shadow-md flex w-full ${isSticky ? 'h-32' : 'h-80'}`}
       >
         {palette.map((hex, i) => (
           <div
@@ -259,8 +263,6 @@ const ColorTool = () => {
           </div>
         ))}
       </div>
-
-
 
       {/* Color Picker & Image Picker */}
       <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-md">
