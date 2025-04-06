@@ -51,10 +51,10 @@ function Signin() {
 
 
     return (
-        <div className="min-h-screen bg-purple-50 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h1 className="text-3xl font-bold text-purple-700 mb-6">Sign in</h1>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
+        <div className="min-h-screen bg-gradient-to-b from-black via-purple-400 to-black flex items-center justify-center text-white">
+            <div className="bg-purple-950/20 backdrop-blur-xl p-8 rounded-3xl shadow-lg w-full max-w-md border-2 border-purple-200">
+                <h1 className="text-3xl font-bold text-purple-200 mb-6">Sign in</h1>
+                {error && <p className="text-red-800 mb-4">{error}</p>}
                 <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                     <label htmlFor="email" className="sr-only">Email</label>
                     <input
@@ -63,7 +63,7 @@ function Signin() {
                         id="email"
                         onChange={handleChange}
                         value={formData.email}
-                        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="bg-purple-900/50 p-3 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                     <label htmlFor="password" className="sr-only">Password</label>
                     <input
@@ -72,16 +72,16 @@ function Signin() {
                         id="password"
                         onChange={handleChange}
                         value={formData.password}
-                        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="bg-purple-900/50 p-3 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                     <button
                         type="submit"
-                        className="bg-purple-600 text-white p-3 rounded-lg shadow hover:bg-purple-700 transition duration-300"
+                        className="bg-purple-900 text-white p-3 rounded-3xl shadow hover:bg-purple-700 transition duration-300"
                     >
                         Sign in
                     </button>
                 </form>
-                <p className="mt-10">Don't have an account? <Link to="/signup" className="text-purple-600 hover:underline">Sign up</Link></p>
+                <p className="mt-10">Don't have an account? <Link to="/signup" className="text-purple-300 hover:bg-purple-700 bg-purple-500/50 rounded-2xl px-2">Sign up</Link></p>
             </div>
         </div>
     );

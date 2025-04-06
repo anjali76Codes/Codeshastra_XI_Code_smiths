@@ -1,9 +1,9 @@
 import React from 'react'
 import CodeFormatter from '../../components/validator_feature/CodeFormatter'
 
-const CodeFormatterPage = () => {
+const CodeFormatterPage = ({ isDarkMode }) => {
   return (
-    <div><CodeFormatter></CodeFormatter></div>
+    <div><CodeFormatter isDarkMode={isDarkMode}/></div>
   )
 }
 

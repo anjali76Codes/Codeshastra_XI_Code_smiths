@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const PasswordForm = () => {
+const PasswordForm = ({ isDarkMode }) => {
   const [length, setLength] = useState(8);
   const [password, setPassword] = useState("");
   const [strongMode, setStrongMode] = useState(false);
@@ -17,7 +17,6 @@ const PasswordForm = () => {
 
   const handleLengthInput = (e) => {
     const val = e.target.value;
-
     if (/^\d*$/.test(val)) {
       setInputValue(val);
       const num = parseInt(val, 10);
@@ -86,10 +85,7 @@ const PasswordForm = () => {
       result += allChars.charAt(Math.floor(Math.random() * allChars.length));
     }
 
-    const shuffled = result
-      .split("")
-      .sort(() => 0.5 - Math.random())
-      .join("");
+    const shuffled = result.split("").sort(() => 0.5 - Math.random()).join("");
 
     setPassword(shuffled);
     setStrongMode(false);
@@ -99,7 +95,7 @@ const PasswordForm = () => {
 
   const handleSaveLabel = () => {
     if (label.trim() !== "" && secretKey.trim() !== "") {
-      const encodedPassword = btoa(password); // base64 encode
+      const encodedPassword = btoa(password);
       setSavedPasswords((prev) => [
         ...prev,
         {
@@ -109,7 +105,7 @@ const PasswordForm = () => {
           revealedPassword: null,
         },
       ]);
-      setSavedMessage(`✅ Saved "${label}" with password.`);
+      setSavedMessage(`Saved "${label}" successfully.`);
       setLabel("");
       setSecretKey("");
       setShowLabelInput(false);
@@ -130,157 +126,152 @@ const PasswordForm = () => {
       setSavedPasswords(updated);
       setViewPassword(null);
     } else {
-      setViewError("❌ Incorrect Secret Key");
+      setViewError("Incorrect Secret Key");
     }
   };
 
   return (
-    
-    <div className="min-h-[75vh] bg-gray-900 text-white flex flex-col items-center justify-start px-4 py-10">
-      <div className="w-full max-w-7xl flex flex-col md:flex-row gap-6">
-        {/* Password Generator Left Panel */}
-        <div className="flex-1 p-6 rounded-2xl bg-gray-800 shadow-2xl space-y-6">
-          <h1 className="text-3xl font-bold text-center text-blue-400">
-            🔐 Password Generator
-          </h1>
+    <div
+      className={`max-w-3xl mx-auto mt-10 p-6 border-2 rounded-2xl shadow-md backdrop-blur-lg transition-colors duration-300 space-y-6
+        ${isDarkMode
+          ? "bg-purple-900/20 border-white text-white"
+          : "bg-purple-300/80 border-purple-200 text-black"
+        }`}
+    >
+      <h2 className="text-2xl font-semibold text-center mb-2">Password Generator</h2>
 
-          <div>
-            <label className="block mb-2 text-sm text-gray-300">
-              Password Length (4 to 15)
-            </label>
-            <input
-              type="text"
-              value={inputValue}
-              onChange={handleLengthInput}
-              placeholder="Enter length"
-              className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              maxLength={2}
-            />
-            {lengthError && (
-              <p className="text-red-400 text-sm mt-1">{lengthError}</p>
-            )}
-          </div>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleLengthInput}
+        placeholder="Password length (4-15)"
+        maxLength={2}
+        className={`w-full px-4 py-2 rounded-3xl focus:outline-none focus:ring-2
+          ${isDarkMode
+            ? "bg-purple-900/80 text-white focus:ring-purple-300"
+            : "bg-purple-100 text-black focus:ring-blue-400"
+          }`}
+      />
+      {lengthError && <p className="text-red-500 text-sm">{lengthError}</p>}
 
+      <div className="flex gap-4 flex-wrap">
+        <button
+          onClick={generateSimplePassword}
+          className="bg-blue-600 text-white px-4 py-2 rounded-3xl hover:bg-blue-700 transition"
+        >
+          Generate Simple
+        </button>
+        {password && strongMode && (
           <button
-            onClick={generateSimplePassword}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition duration-300"
+            onClick={generateStrongPassword}
+            className="bg-green-600 text-white px-4 py-2 rounded-3xl hover:bg-green-700 transition"
           >
-            Generate Password
+            Make Stronger
           </button>
-
-          {password && (
-            <div className="text-center space-y-3">
-              <p className="text-gray-300">Your Password:</p>
-              <p className="text-lg font-mono bg-gray-700 px-4 py-2 rounded-lg break-all">
-                {password}
-              </p>
-
-              {strongMode && (
-                <button
-                  onClick={generateStrongPassword}
-                  className="mt-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition duration-300"
-                >
-                  Make it Strong 💪
-                </button>
-              )}
-
-              <button
-                onClick={() => setShowLabelInput(true)}
-                className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-black py-2 px-4 rounded-lg transition duration-300"
-              >
-                Add Label to Save 🏷️
-              </button>
-
-              {showLabelInput && (
-                <div className="mt-4 space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Enter label (e.g. Instagram)"
-                    value={label}
-                    onChange={(e) => setLabel(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  />
-                  <input
-                    type="password"
-                    placeholder="Enter secret key"
-                    value={secretKey}
-                    onChange={(e) => setSecretKey(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  />
-                  <button
-                    onClick={handleSaveLabel}
-                    className="bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded-lg transition duration-300 w-full"
-                  >
-                    Save Label
-                  </button>
-                </div>
-              )}
-
-              {savedMessage && (
-                <p className="text-green-400 text-sm mt-2">{savedMessage}</p>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Saved Passwords Right Panel */}
-        {savedPasswords.length > 0 && (
-          <div className="flex-1 p-6 rounded-2xl bg-gray-800 shadow-2xl space-y-4">
-            <h2 className="text-xl font-semibold text-yellow-400">
-              🔒 Saved Passwords
-            </h2>
-            {savedPasswords.map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-gray-900 border border-gray-700 p-4 rounded-xl shadow-md flex flex-col"
-              >
-                <p className="text-sm text-gray-400">Label:</p>
-                <p className="text-base font-semibold text-white mb-2">{item.label}</p>
-                <p className="text-sm text-gray-400">Password:</p>
-                <p className="font-mono break-all text-green-300 mb-2">
-                  {"*".repeat(atob(item.password).length)}
-                </p>
-
-                {!item.revealedPassword && (
-                  <>
-                    <button
-                      onClick={() => handleViewPassword(idx)}
-                      className="bg-purple-600 hover:bg-purple-700 text-white py-1 px-3 rounded-lg transition duration-300 self-start"
-                    >
-                      View 🔍
-                    </button>
-
-                    {viewPassword === idx && (
-                      <div className="mt-3 space-y-2">
-                        <input
-                          type="password"
-                          placeholder="Enter secret key"
-                          value={enteredKey}
-                          onChange={(e) => setEnteredKey(e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                        />
-                        {viewError && <p className="text-red-400">{viewError}</p>}
-                        <button
-                          onClick={() => handleCheckKey(idx)}
-                          className="bg-green-600 hover:bg-green-700 text-white py-1 px-4 rounded-lg transition duration-300 w-full"
-                        >
-                          Submit 🔐
-                        </button>
-                      </div>
-                    )}
-                  </>
-                )}
-
-                {item.revealedPassword && (
-                  <p className="mt-2 text-white">
-                    🔓 <strong>Original Password:</strong> {item.revealedPassword}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
+        )}
+        {password && (
+          <button
+            onClick={() => setShowLabelInput(true)}
+            className="bg-yellow-500 text-black px-4 py-2 rounded-3xl hover:bg-yellow-600 transition"
+          >
+            Save with Label
+          </button>
         )}
       </div>
+
+      {password && (
+        <div>
+          <p className="mt-4 text-sm">Generated Password:</p>
+          <p className={`px-4 py-2 font-mono rounded-lg mt-1 break-all 
+            ${isDarkMode ? "bg-gray-800 text-white" : "bg-white text-black border"}`}>
+            {password}
+          </p>
+        </div>
+      )}
+
+      {showLabelInput && (
+        <div className="space-y-3">
+          <input
+            type="text"
+            placeholder="Enter label (e.g. Instagram)"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            className={`w-full px-4 py-2 rounded-3xl focus:outline-none focus:ring-2
+              ${isDarkMode
+                ? "bg-purple-900/80 text-white focus:ring-yellow-300"
+                : "bg-purple-100 text-black focus:ring-yellow-500"
+              }`}
+          />
+          <input
+            type="password"
+            placeholder="Enter secret key"
+            value={secretKey}
+            onChange={(e) => setSecretKey(e.target.value)}
+            className={`w-full px-4 py-2 rounded-3xl focus:outline-none focus:ring-2
+              ${isDarkMode
+                ? "bg-purple-900/80 text-white focus:ring-yellow-300"
+                : "bg-purple-100 text-black focus:ring-yellow-500"
+              }`}
+          />
+          <button
+            onClick={handleSaveLabel}
+            className="w-full bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-3xl transition"
+          >
+            Save
+          </button>
+        </div>
+      )}
+
+      {savedMessage && <p className="text-green-400">{savedMessage}</p>}
+
+      {savedPasswords.length > 0 && (
+        <div className="pt-4 space-y-4">
+          <h3 className="text-xl font-semibold">Saved Passwords</h3>
+          {savedPasswords.map((item, idx) => (
+            <div key={idx} className={`p-4 rounded-xl border
+              ${isDarkMode ? "bg-gray-900 border-gray-700" : "bg-white border-gray-300"}`}>
+              <p className="text-sm">Label: <strong>{item.label}</strong></p>
+              <p className="text-sm">Password: <span className="text-green-500 font-mono">{'*'.repeat(atob(item.password).length)}</span></p>
+
+              {!item.revealedPassword ? (
+                <>
+                  <button
+                    onClick={() => handleViewPassword(idx)}
+                    className="mt-2 bg-purple-600 text-white px-4 py-1 rounded-3xl hover:bg-purple-700 transition"
+                  >
+                    View
+                  </button>
+
+                  {viewPassword === idx && (
+                    <div className="mt-2 space-y-2">
+                      <input
+                        type="password"
+                        placeholder="Enter secret key"
+                        value={enteredKey}
+                        onChange={(e) => setEnteredKey(e.target.value)}
+                        className={`w-full px-3 py-2 rounded-3xl focus:outline-none focus:ring-2
+                          ${isDarkMode
+                            ? "bg-purple-900/80 text-white focus:ring-purple-300"
+                            : "bg-purple-100 text-black focus:ring-blue-400"
+                          }`}
+                      />
+                      {viewError && <p className="text-red-500">{viewError}</p>}
+                      <button
+                        onClick={() => handleCheckKey(idx)}
+                        className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-3xl transition"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <p className="mt-2 text-sm text-white">Original: <span className="font-mono text-green-300">{item.revealedPassword}</span></p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
