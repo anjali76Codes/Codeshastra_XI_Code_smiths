@@ -1,23 +1,43 @@
-
 {
     "user": {
-      "name": "John Doe",
       "subscription": {
-        "plan": "Premium",
-        "total_requests": 1000,
-        "remaining_requests": 720,
-        "used_requests": 280
+        "plan": "Pro",
+        "used_requests": 1500,
+        "remaining_requests": 500,
+        "total_requests": 2000,
+        "subscribed_features": [
+          "API Requests",
+          "Image Conversion",
+          "Code Validation",
+          "Feature 4",
+          "Feature 5",
+          "Feature 6",
+          "Feature 7",
+          "Feature 8",
+          "Feature 9",
+          "Feature 10"
+        ]
       },
       "feature_usage": {
-        "Text Formatter": 120,
-        "CSV & Excel Tools": 80,
-        "API Tools": 60,
-        "Image & Graphic Converters": 50,
-        "Code Formatter": 30,
-        "Password Generator": 15,
-        "Random Number Generator": 20,
-        "Network Utilities": 15
-      }
+        "API Requests": 1200,
+        "Image Conversion": 250,
+        "Code Validation": 50,
+        "Feature 4": 100,
+        "Feature 5": 30,
+        "Feature 6": 10,
+        "Feature 7": 0,
+        "Feature 8": 0,
+        "Feature 9": 0,
+        "Feature 10": 10,
+        "Feature 11": 0,
+        "Feature 12": 0,
+        "Feature 13": 0,
+        "Feature 14": 0,
+        "Feature 15": 0
+      },
+      "api_requests": 1200,
+      "images_converted": 250,
+      "code_validated": 50
     }
   }
   

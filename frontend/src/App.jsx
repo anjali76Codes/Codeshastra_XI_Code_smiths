@@ -54,6 +54,7 @@ import MainApp from './components/MainApp';
 import FeaturePage from './pages/FeaturePage';
 
 import './App.css';
+import ColorPalette from './components/ColorPalette';
 
 function App() {
   return (
@@ -101,6 +102,7 @@ function App() {
         {/* SEO & Dashboard */}
         <Route path="/seo" element={<MainApp />} />
         <Route path="/dashboard" element={<FeaturePage />} />
+        <Route path="/ai" element={<ColorPalette/>} />
       </Routes>
     </Router>
   );
