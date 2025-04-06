@@ -4,6 +4,8 @@ import { colord, extend } from 'colord';
 import namesPlugin from 'colord/plugins/names';
 import html2canvas from 'html2canvas';
 import { usePaymentStatus } from '../login/PaymentStatusContext';
+import AIPalette from './AIPalette';
+import ChatWithAI from './ChatWithAI';
 
 extend([namesPlugin]);
 
@@ -205,6 +207,11 @@ const ColorTool = () => {
 
   return (
     <div className="min-h-screen backdrop-blur-lg border-2 border-purple-100 rounded-3xl p-3">
+      {/* ChatWithAI Component placed at the top */}
+      <div className="mb-10">
+        <ChatWithAI />
+      </div>
+
       {/* Floating Controls */}
       <div className="sticky bg-white shadow-md px-4 py-2 rounded-full flex gap-3 z-50">
         <select
@@ -251,8 +258,8 @@ const ColorTool = () => {
       {/* Sticky Palette */}
       <div
         ref={paletteRef}
-        className={`sticky mt-10 z-40 transition-all duration-300 ease-in-out bg-white rounded-xl overflow-hidden shadow-md flex w-full ${isSticky ? 'h-32' : 'h-80'
-          }`}
+
+        className={`sticky mt-10 z-40 transition-all duration-300 ease-in-out bg-white rounded-xl overflow-hidden shadow-md flex w-full ${isSticky ? 'h-32' : 'h-80'}`}
       >
         {palette.map((hex, i) => (
           <div

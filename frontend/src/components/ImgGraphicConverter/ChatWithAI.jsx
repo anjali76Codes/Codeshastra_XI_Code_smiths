@@ -5,7 +5,7 @@ const ChatWithAI = () => {
     const [message, setMessage] = useState('');
     const [conversation, setConversation] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [aiPrompt, setAiPrompt] = useState(''); // To store the AI-generated prompt
+    const [aiPrompt, setAiPrompt] = useState(''); // To store the AI-generated hex codes
 
     const handleMessageChange = (e) => {
         setMessage(e.target.value);
@@ -29,13 +29,30 @@ const ChatWithAI = () => {
             });
 
             const data = await response.json();
-            const aiMessage = {
-                sender: 'AI',
-                text: data.candidates[0].content.parts[0].text,
-            };
+            const aiMessageText = data.candidates[0]?.content?.parts[0]?.text || '';
 
-            setAiPrompt(aiMessage.text); // Save AI-generated text as prompt
-            setConversation([...conversation, userMessage, aiMessage]);
+            // Extract hex codes from the AI-generated response (only hex values)
+            const hexCodePattern = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g;
+            const hexCodes = aiMessageText.match(hexCodePattern) || [];
+
+            // If no hex codes are found, we fall back to a predefined set of colors inspired by a tropical rainforest at dawn
+            let hexCodeMessage;
+            if (hexCodes.length > 0) {
+                hexCodeMessage = {
+                    sender: 'AI',
+                    text: hexCodes.join(', '),  // Join the hex codes with commas
+                };
+            } else {
+                // Fallback hex codes based on tropical rainforest dawn imagery
+                hexCodeMessage = {
+                    sender: 'AI',
+                    text: '#004225, #437A76, #654321, #BDB76B, #E2BADB, #FF8042', // These are representative hex codes
+                };
+            }
+
+            setAiPrompt(hexCodeMessage.text); // Save only hex codes as prompt
+            setConversation([...conversation, userMessage, hexCodeMessage]);
+
         } catch (error) {
             console.error('Error:', error);
             setConversation([...conversation, { sender: 'AI', text: 'Sorry, something went wrong. Please try again.' }]);
@@ -73,7 +90,7 @@ const ChatWithAI = () => {
                 </button>
             </div>
 
-            {/* Pass the AI-generated prompt to AIPalette */}
+            {/* Display AI-generated hex codes */}
             {aiPrompt && <AIPalette onApply={(colors) => console.log('Generated Colors:', colors)} prompt={aiPrompt} />}
         </div>
     );

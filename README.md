@@ -1,6 +1,6 @@
 # 🚀 Codeshastra XI – Code Smiths
 
-## 🧰 Project: **ToolBoxHub**
+## 🧰 Project: *ToolBoxHub*
 
 ### 💡 Problem Statement
 

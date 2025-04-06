@@ -3,34 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Query Result</title>
+    <title>Query Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .glass {
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in {
+        animation: fade 0.5s ease-out;
+      }
+    </style>
   </head>
-  <body>
-    <h1>Query Results</h1>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Email</th>
-          <th>City</th>
-          <th>Country</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for user in users %}
-        <tr>
-          <td>{{ user['id'] }}</td>
-          <td>{{ user['name'] }}</td>
-          <td>{{ user['age'] }}</td>
-          <td>{{ user['email'] }}</td>
-          <td>{{ user['city'] }}</td>
-          <td>{{ user['country'] }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <a href="/">Go to Home</a>
+  <body class="min-h-screen bg-gradient-to-b from-black via-purple-500 to-black text-white p-6">
+
+    <!-- Go to Home Button at Top -->
+    <div class="w-full flex justify-start mb-6">
+      <a href="/" class="px-4 py-2 bg-purple-800 hover:bg-purple-600 text-white rounded-full shadow-lg transition-all">
+        ← Go to Home
+      </a>
+    </div>
+
+    <div class="overflow-x-auto max-w-6xl mx-auto rounded-3xl glass bg-white bg-opacity-10 border border-purple-500 p-6 shadow-2xl fade-in">
+      <h1 class="text-3xl font-bold text-center mb-6 text-purple-200">Query Results</h1>
+
+      <table class="w-full table-auto text-sm text-left border-collapse rounded-xl overflow-hidden bg-black bg-opacity-40 shadow-lg">
+        <thead class="bg-purple-900 text-purple-100">
+          <tr>
+            <th class="px-4 py-3 border border-purple-700">ID</th>
+            <th class="px-4 py-3 border border-purple-700">Name</th>
+            <th class="px-4 py-3 border border-purple-700">Age</th>
+            <th class="px-4 py-3 border border-purple-700">Email</th>
+            <th class="px-4 py-3 border border-purple-700">City</th>
+            <th class="px-4 py-3 border border-purple-700">Country</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr class="hover:bg-purple-800 hover:bg-opacity-30 transition-colors">
+            <td class="px-4 py-2 border border-purple-700">{{ user['id'] }}</td>
+            <td class="px-4 py-2 border border-purple-700">{{ user['name'] }}</td>
+            <td class="px-4 py-2 border border-purple-700">{{ user['age'] }}</td>
+            <td class="px-4 py-2 border border-purple-700">{{ user['email'] }}</td>
+            <td class="px-4 py-2 border border-purple-700">{{ user['city'] }}</td>
+            <td class="px-4 py-2 border border-purple-700">{{ user['country'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
   </body>
 </html>

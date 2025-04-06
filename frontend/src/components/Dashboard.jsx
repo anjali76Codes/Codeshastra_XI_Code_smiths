@@ -1,39 +1,24 @@
-// src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { Bar, Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import { Bar, Doughnut, Pie } from 'react-chartjs-2';
+import { 
+  Chart as ChartJS, 
+  CategoryScale, 
+  LinearScale, 
+  BarElement, 
+  Title, 
+  Tooltip, 
+  Legend, 
+  ArcElement 
+} from 'chart.js';
+
+// Import data from the external JSON file
+import data from '../data.json'; // Renamed to avoid conflict with state variable
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
-// Sample data in JSON format
-const data = {
-  user: {
-    name: 'John Doe',
-    subscription: {
-      plan: 'Premium',
-      total_requests: 1000,
-      remaining_requests: 720,
-      used_requests: 280,
-    },
-    feature_usage: {
-      'Text Formatter': 120,
-      'CSV & Excel Tools': 80,
-      'API Tools': 60,
-      'Image & Graphic Converters': 50,
-      'Code Formatter': 30,
-      'Password Generator': 15,
-      'Random Number Generator': 20,
-      'Network Utilities': 15,
-    },
-  },
-};
-
 const Dashboard = () => {
-  const [userData, setUserData] = useState(data.user);
-
-  useEffect(() => {
-    setUserData(data.user);
-  }, []);
+  // Initialize the state with the imported data
+  const [userData] = useState(data.user); // Directly using the imported data
 
   // Find the most used feature
   const mostUsedFeature = Object.entries(userData.feature_usage).reduce(
@@ -50,11 +35,14 @@ const Dashboard = () => {
       {
         label: 'Requests Used',
         data: Object.values(userData.feature_usage),
-        backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#8e44ad', '#1abc9c', '#16a085', '#d35400'],
+        backgroundColor: '#3498db', // Blue color for all bars
         borderRadius: 6,
         borderColor: '#fff',
         borderWidth: 2,
         hoverBackgroundColor: '#2980b9',
+        barThickness: 40, // Increased bar width for better visibility
+        categoryPercentage: 0.8, // Adjust the spacing between bars
+        barPercentage: 0.7, // Adjust the width of each bar
       },
     ],
   };
@@ -74,6 +62,19 @@ const Dashboard = () => {
   // Request Usage Percentage
   const usedPercentage = Math.round((userData.subscription.used_requests / userData.subscription.total_requests) * 100);
   const remainingPercentage = 100 - usedPercentage;
+
+  // Request Analytics with Pie Chart
+  const requestAnalyticsData = {
+    labels: ['Used Requests', 'Remaining Requests'],
+    datasets: [
+      {
+        data: [userData.subscription.used_requests, userData.subscription.remaining_requests],
+        backgroundColor: ['#3498db', '#95a5a6'],
+        borderWidth: 1,
+        borderColor: '#fff',
+      },
+    ],
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen p-8">
@@ -104,19 +105,49 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Requests Usage Visualization */}
-        <div className="bg-white shadow-xl rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-700 mb-6">Request Usage</h2>
+        {/* Requests Usage and Feature Usage Side by Side */}
+        <div className="bg-white shadow-xl rounded-lg p-6 mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Request Usage Visualization */}
           <div className="h-64">
+            <h2 className="text-xl font-semibold text-gray-700 mb-6">Request Usage</h2>
             <Doughnut data={requestUsageData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
           </div>
-        </div>
 
-        {/* Feature Usage Section */}
-        <div className="bg-white shadow-xl rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-700 mb-6">Feature Usage</h2>
-          <div className="h-64">
-            <Bar data={featureUsageData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
+          {/* Feature Usage Visualization */}
+          <div className="h-80">
+            <h2 className="text-xl font-semibold text-gray-700 mb-6">Feature Usage</h2>
+            <Bar
+              data={featureUsageData}
+              options={{
+                responsive: true,
+                indexAxis: 'y', // Horizontal bars
+                plugins: {
+                  legend: {
+                    position: 'top',
+                    labels: {
+                      font: {
+                        size: 14,
+                      },
+                    },
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: (tooltipItem) => {
+                        return `${tooltipItem.raw} requests`; // Fixed tooltip syntax
+                      },
+                    },
+                  },
+                },
+                scales: {
+                  x: {
+                    ticks: {
+                      beginAtZero: true,
+                      padding: 10, // Adjust space between the bar and axis
+                    },
+                  },
+                },
+              }}
+            />
           </div>
         </div>
 
@@ -128,10 +159,28 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Request Analytics */}
+        {/* Request Analytics with Pie Chart */}
         <div className="bg-white shadow-xl rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-700">Request Analytics</h2>
-          <div className="text-sm text-gray-600">
+          <h2 className="text-xl font-semibold text-gray-700 mb-6">Request Analytics</h2>
+          <div className="h-64">
+            <Pie
+              data={requestAnalyticsData}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top', // Correctly placed legend option
+                    labels: {
+                      font: {
+                        size: 14, // Standard text size for legend
+                      },
+                    },
+                  },
+                },
+              }}
+            />
+          </div>
+          <div className="text-base text-gray-600 mt-4">
             <p>Total Requests: {userData.subscription.total_requests}</p>
             <p>Used Requests: {userData.subscription.used_requests}</p>
             <p>Remaining Requests: {userData.subscription.remaining_requests}</p>

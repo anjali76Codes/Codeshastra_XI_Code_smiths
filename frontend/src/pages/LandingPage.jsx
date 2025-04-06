@@ -91,7 +91,7 @@ export default function LandingPage() {
     ].map((feature, index) => (
       <div
         key={index}
-        className="bg-purple-950/10 backdrop-blur-sm p-8 rounded-3xl border border-purple-300 shadow-md transition-transform duration-300 hover:scale-105"
+        className="bg-purple-950/60 backdrop-blur-sm p-8 rounded-3xl border border-purple-300 shadow-md transition-transform duration-300 hover:scale-105"
         data-aos="zoom-in"
         data-aos-delay={index * 100}
       >
@@ -117,7 +117,7 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
           {[
             { icon: <BarChartIcon />, title: "Analytics & SEO", desc: "Meta tags, sitemaps & keyword analyzers.", color: "text-yellow-400" },
-            { icon: <MusicIcon />, title: "Audio & Video Tools", desc: "Trim, convert & synthesize with ease.", color: "text-indigo-400" },
+            // { icon: <MusicIcon />, title: "Audio & Video Tools", desc: "Trim, convert & synthesize with ease.", color: "text-indigo-400" },
             { icon: <MessageCircleIcon />, title: "User Requested Features", desc: "Custom tools, made just for you.", color: "text-orange-400" },
           ].map((tool, i) => (
             <div

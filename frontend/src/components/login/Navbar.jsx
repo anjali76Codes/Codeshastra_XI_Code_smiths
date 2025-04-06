@@ -66,6 +66,13 @@ export default function Navbar() {
       ],
     },
     {
+      label: 'Simulations', // New section added here
+      dropdown: [
+        { label: 'Linux Terminal', path: '/terminal' },
+        { label: 'SQL Playground', path: '/query' },
+      ],
+    },
+    {
       label: 'Account',
       dropdown: username
         ? [
@@ -80,6 +87,7 @@ export default function Navbar() {
         ],
     },
   ];
+  
 
   return (
     <nav className="bg-black text-white shadow-lg sticky top-0 z-50 font-medium">
@@ -87,15 +95,6 @@ export default function Navbar() {
         <Link to="/" className="text-2xl font-bold text-purple-500 tracking-wide">
           ToolSuite
         </Link>
-
-        {/* Theme Toggle */}
-        <button
-          onClick={toggleDarkMode}
-          className="text-white hover:text-purple-400 transition lg:mr-4"
-          title="Toggle dark mode"
-        >
-          {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
 
         {/* Mobile toggle */}
         <div className="lg:hidden">
@@ -155,6 +154,15 @@ export default function Navbar() {
             )
           )}
         </div>
+
+                {/* Theme Toggle */}
+          <button
+          onClick={toggleDarkMode}
+          className="text-white hover:text-purple-400 transition lg:mr-4 flex-end"
+          title="Toggle dark mode"
+        >
+          {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
       </div>
 
       {/* Mobile Menu */}
@@ -211,6 +219,7 @@ export default function Navbar() {
           )}
         </div>
       )}
+
     </nav>
   );
 }

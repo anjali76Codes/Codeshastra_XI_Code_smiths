@@ -59,6 +59,7 @@ import { PaymentStatusProvider } from './components/login/PaymentStatusContext';
 import { ThemeProvider } from './components/Theme/themecontext';
 
 import './App.css';
+import ColorPalette from './components/ColorPalette';
 
 function App() {
   return (
@@ -106,6 +107,7 @@ function App() {
             <Route path="/dashboard" element={<FeaturePage />} />
           </Routes>
         </Router>
+
       </ThemeProvider>
     </PaymentStatusProvider>
   );

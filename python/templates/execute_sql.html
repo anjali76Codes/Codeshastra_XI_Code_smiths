@@ -1,17 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Execute SQL Query</title>
-  </head>
-  <body>
-    <h1>Execute SQL Query</h1>
-    <form action="/execute_sql" method="POST">
-      <label for="query">Enter SQL Query:</label>
-      <textarea name="query" id="query" rows="4" cols="50" required></textarea>
-      <br />
-      <button type="submit">Execute Query</button>
-    </form>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SQL Playground Terminal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glass {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+      animation: fade-in-up 0.6s ease-out;
+    }
+    body {
+      font-family: 'Fira Code', monospace;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-black via-purple-900 to-black text-purple-400 p-6 flex flex-row">
+    <!-- Go to Home Button -->
+    <div class="mb-4 text-left">
+      <a href="/" class="inline-block px-4 py-2 bg-purple-700 hover:bg-purple-600 text-white font-semibold rounded-full shadow-md transition duration-300">
+        ← Home
+      </a>
+    </div>
+  <div class="w-full max-w-7xl mx-auto glass h-auto bg-white bg-opacity-5 border border-purple-500 rounded-3xl p-8 shadow-2xl animate-fade-in-up">
+    <h1 class="text-3xl font-bold text-center mb-8 text-purple-300 drop-shadow">
+      SQL Playground Terminal
+    </h1>
+
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- SQL Query Form -->
+      <div class="flex-1">
+        <form action="/execute_sql" method="POST" class="mb-8">
+          <div class="flex flex-row text-center justify-between">
+          <label for="query" class="block text-lg mb-2 text-purple-300 font-semibold">
+            Enter SQL Query:
+          </label>
+          <div class="text-center">
+            <button
+              type="submit"
+              class="px-4 py-1 mb-2 bg-purple-600 hover:bg-purple-500 rounded-full text-white font-semibold transition-all shadow-lg"
+            >
+              Execute Query
+            </button>
+          </div>
+        </div>
+          <textarea
+            name="query"
+            id="query"
+            rows="20"
+            required
+            placeholder="SELECT * FROM users; -- add query"
+            class="w-full min-h-2/3 p-4 rounded-xl bg-black bg-opacity-60 text-purple-400 border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-purple-500"
+          ></textarea>
+
+        </form>
+
+        <!-- Query Result Table -->
+        {% if users %}
+        <div class="overflow-x-auto mt-6">
+          <h2 class="text-xl font-semibold mb-4 text-purple-300 border-b border-purple-400 pb-2">
+            Query Results
+          </h2>
+          <table class="w-full table-auto text-sm text-left border-collapse rounded-xl overflow-hidden bg-black bg-opacity-40 shadow-md">
+            <thead class="bg-purple-800 text-purple-100">
+              <tr>
+                <th class="px-4 py-3 border border-purple-600">ID</th>
+                <th class="px-4 py-3 border border-purple-600">Name</th>
+                <th class="px-4 py-3 border border-purple-600">Age</th>
+                <th class="px-4 py-3 border border-purple-600">Email</th>
+                <th class="px-4 py-3 border border-purple-600">City</th>
+                <th class="px-4 py-3 border border-purple-600">Country</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+              <tr class="hover:bg-purple-700 hover:bg-opacity-30 transition-colors">
+                <td class="px-4 py-2 border border-purple-700">{{ user['id'] }}</td>
+                <td class="px-4 py-2 border border-purple-700">{{ user['name'] }}</td>
+                <td class="px-4 py-2 border border-purple-700">{{ user['age'] }}</td>
+                <td class="px-4 py-2 border border-purple-700">{{ user['email'] }}</td>
+                <td class="px-4 py-2 border border-purple-700">{{ user['city'] }}</td>
+                <td class="px-4 py-2 border border-purple-700">{{ user['country'] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- SQL Guide Panel -->
+      <div class="w-full lg:w-[22rem] h-full p-4 bg-black bg-opacity-80 text-purple-300 rounded-3xl shadow-inner">
+        <h2 class="text-lg font-semibold mb-4 border-b border-purple-500 pb-2">SQL Query Guide</h2>
+
+        <input
+          type="text"
+          id="sql-search"
+          onkeyup="filterSQLGuide()"
+          placeholder="Search SQL..."
+          class="w-full mb-4 px-3 py-2 rounded-3xl bg-black text-purple-300 text-sm placeholder-purple-600 focus:outline-none border border-purple-500 focus:ring-2 focus:ring-purple-400"
+        />
+
+        <ul class="space-y-2 mt-4 text-sm max-h-[60vh] overflow-y-auto pr-2 guide-list">
+          <li class="guide-item"><strong>SELECT</strong> – Retrieve data from a table</li>
+          <li class="guide-item"><strong>INSERT INTO</strong> – Add new data into a table</li>
+          <li class="guide-item"><strong>UPDATE</strong> – Modify existing data</li>
+          <li class="guide-item"><strong>DELETE</strong> – Remove data from a table</li>
+          <li class="guide-item"><strong>CREATE TABLE</strong> – Define a new table</li>
+          <li class="guide-item"><strong>DROP TABLE</strong> – Delete a table and its data</li>
+          <li class="guide-item"><strong>ALTER TABLE</strong> – Modify a table's structure</li>
+          <li class="guide-item"><strong>WHERE</strong> – Filter query results</li>
+          <li class="guide-item"><strong>ORDER BY</strong> – Sort results</li>
+          <li class="guide-item"><strong>GROUP BY</strong> – Group rows by values</li>
+          <li class="guide-item"><strong>HAVING</strong> – Filter grouped results</li>
+          <li class="guide-item"><strong>JOIN</strong> – Combine rows from multiple tables</li>
+          <li class="guide-item"><strong>INNER JOIN</strong> – Matching rows from both tables</li>
+          <li class="guide-item"><strong>LEFT JOIN</strong> – All left + matching right</li>
+          <li class="guide-item"><strong>RIGHT JOIN</strong> – All right + matching left</li>
+          <li class="guide-item"><strong>FULL OUTER JOIN</strong> – All records when match found or not</li>
+          <li class="guide-item"><strong>LIMIT</strong> – Restrict number of results</li>
+          <li class="guide-item"><strong>OFFSET</strong> – Skip rows in result set</li>
+          <li class="guide-item"><strong>LIKE</strong> – Pattern match</li>
+          <li class="guide-item"><strong>IN</strong> – Match a value in a list</li>
+          <li class="guide-item"><strong>BETWEEN</strong> – Value within range</li>
+          <li class="guide-item"><strong>IS NULL</strong> – Check for NULL</li>
+          <li class="guide-item"><strong>DISTINCT</strong> – Remove duplicate results</li>
+          <li class="guide-item"><strong>CASE</strong> – Conditional logic in queries</li>
+          <li class="guide-item"><strong>UNION</strong> – Combine results from multiple SELECTs</li>
+          <li class="guide-item"><strong>EXISTS</strong> – Test for existence of rows</li>
+          <li class="guide-item"><strong>TRUNCATE</strong> – Remove all rows from a table</li>
+          <li class="guide-item"><strong>RENAME TABLE</strong> – Rename a table</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function filterSQLGuide() {
+      const input = document.getElementById('sql-search').value.toLowerCase();
+      const items = document.querySelectorAll('.guide-item');
+      items.forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(input) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
 </html>
