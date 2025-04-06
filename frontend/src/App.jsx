@@ -53,13 +53,17 @@ import TypingTestPage from './pages/TypingTest';
 import MainApp from './components/MainApp';
 import FeaturePage from './pages/FeaturePage';
 
+import { ThemeProvider } from './components/Theme/themecontext';
+
 import './App.css';
 import ColorPalette from './components/ColorPalette';
 
 function App() {
   return (
     <Router>
+      <ThemeProvider >
       <Navbar />
+      
 
       <Routes>
         {/* Landing & Auth */}
@@ -104,7 +108,9 @@ function App() {
         <Route path="/dashboard" element={<FeaturePage />} />
         <Route path="/ai" element={<ColorPalette/>} />
       </Routes>
+      </ThemeProvider>
     </Router>
+    
   );
 }
 

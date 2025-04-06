@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../Theme/themecontext';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('theme') === 'dark';
-  });
+  const { isDarkMode, toggleDarkMode } = useTheme(); // Use context for dark mode state
 
   const dropdownRef = useRef(null);
 
@@ -15,17 +14,6 @@ export default function Navbar() {
   const handleDropdown = (idx) => {
     setActiveDropdown(activeDropdown === idx ? null : idx);
   };
-
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem('theme', newMode ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', newMode);
-  };
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
-  }, [isDarkMode]);
 
   useEffect(() => {
     document.body.classList.toggle('overflow-x-hidden', menuOpen);
@@ -48,7 +36,6 @@ export default function Navbar() {
       dropdown: [
         { label: 'Graphic Generator', path: '/graphic' },
         { label: 'Image Converter', path: '/image' },
-        // { label: 'Color Feature', path: '/color' },
         { label: 'Chat with AI', path: '/chat' },
       ],
     },
@@ -66,6 +53,13 @@ export default function Navbar() {
       ],
     },
     {
+      label: 'Simulations', // New section added here
+      dropdown: [
+        { label: 'Linux Terminal', path: '/terminal' },
+        { label: 'SQL Playground', path: '/query' },
+      ],
+    },
+    {
       label: 'Account',
       dropdown: [
         { label: 'Sign In', path: '/signin' },
@@ -76,6 +70,7 @@ export default function Navbar() {
       ],
     },
   ];
+  
 
   return (
     <nav className="bg-black text-white shadow-lg sticky top-0 z-50 font-medium">
@@ -83,15 +78,6 @@ export default function Navbar() {
         <Link to="/" className="text-2xl font-bold text-purple-500 tracking-wide">
           ToolSuite
         </Link>
-
-        {/* Theme Toggle */}
-        <button
-          onClick={toggleDarkMode}
-          className="text-white hover:text-purple-400 transition lg:mr-4"
-          title="Toggle dark mode"
-        >
-          {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
 
         {/* Mobile toggle */}
         <div className="lg:hidden">
@@ -113,11 +99,7 @@ export default function Navbar() {
                   <span className="text-xs">{activeDropdown === idx ? '▴' : '▾'}</span>
                 </button>
                 {activeDropdown === idx && (
-                  <div
-                    className={`absolute top-full mt-2 w-52 bg-white text-black rounded-3xl shadow-lg z-50 ${
-                      idx === navLinks.length - 1 ? 'right-0 left-auto' : 'left-0'
-                    }`}
-                  >
+                  <div className={`absolute top-full mt-2 w-52 bg-white text-black rounded-3xl shadow-lg z-50`}>
                     {nav.dropdown.map((item, i) => (
                       <Link
                         key={i}
@@ -142,6 +124,15 @@ export default function Navbar() {
             )
           )}
         </div>
+
+                {/* Theme Toggle */}
+          <button
+          onClick={toggleDarkMode}
+          className="text-white hover:text-purple-400 transition lg:mr-4 flex-end"
+          title="Toggle dark mode"
+        >
+          {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
       </div>
 
       {/* Mobile Menu */}
@@ -185,6 +176,7 @@ export default function Navbar() {
           )}
         </div>
       )}
+
     </nav>
   );
 }
