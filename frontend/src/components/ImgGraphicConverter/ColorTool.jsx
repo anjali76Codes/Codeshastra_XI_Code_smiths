@@ -185,7 +185,7 @@ const ColorTool = () => {
   }, [color, paletteType, locked]);
 
   return (
-    <div className="min-h-screen backdrop-blur-sm border-2 border-purple-100 rounded-3xl p-3">
+    <div className="min-h-screen backdrop-blur-lg border-2 border-purple-100 rounded-3xl p-3">
       {/* Floating Controls */}
       <div className="sticky bg-white shadow-md px-4 py-2 rounded-full flex gap-3 z-50">
         <select

@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
-import PlanDetailsPopup from './PlanDetailsPopup'; // Import the PlanDetailsPopup component
+import PlanDetailsPopup from './PlanDetailsPopup'; // Make sure this is styled similarly too
 
 const SubscriptionPage = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState(null);
 
-    // Function to open the popup with the selected plan
     const openPopup = (plan) => {
         setSelectedPlan(plan);
         setIsPopupOpen(true);
     };
 
-    // Function to close the popup
     const closePopup = () => {
         setIsPopupOpen(false);
     };
 
-    // Plan data
     const plans = [
         {
             name: 'Free Plan',
@@ -77,35 +74,33 @@ const SubscriptionPage = () => {
     ];
 
     return (
-        <div className="bg-gray-100 font-sans py-16">
+        <div className="min-h-screen bg-gradient-to-b from-black via-purple-500 to-black text-white py-16 px-4">
             {/* Title Section */}
             <div className="text-center mb-12">
-                <h1 className="text-4xl font-extrabold text-gray-800">Choose Your Plan</h1>
-                <p className="text-lg text-gray-600">Our platform provides a variety of tools to boost your productivity. Choose the best plan for you!</p>
+                <h1 className="text-4xl font-extrabold text-purple-200">Choose Your Plan</h1>
+                <p className="text-lg text-purple-100 mt-2">Boost your productivity with the perfect plan tailored for you.</p>
             </div>
 
             {/* Plans Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-4 max-w-7xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto border border-purple-50 p-8 rounded-3xl backdrop-blur-3xl shadow-lg shadow-purple-50">
                 {plans.map((plan) => (
                     <div
                         key={plan.name}
-                        className="bg-white p-6 rounded-xl shadow-lg transition-transform duration-300 hover:scale-105"
+                        className="bg-purple-950/30 backdrop-blur-sm p-6 rounded-3xl border border-purple-300 shadow-lg transition-transform duration-300 hover:scale-105"
                     >
-                        <h3 className="text-xl font-bold text-gray-800 text-center">{plan.name}</h3>
-                        <p className="text-center text-gray-500 mt-2">{plan.description}</p>
-                        <div className="mt-6">
-                            <ul className="space-y-4 text-sm text-gray-600">
-                                {plan.features.map((feature, index) => (
-                                    <li key={index}>✔ {feature}</li>
-                                ))}
-                            </ul>
-                        </div>
+                        <h3 className="text-xl font-bold text-purple-100 text-center">{plan.name}</h3>
+                        <p className="text-center text-purple-200 mt-2">{plan.description}</p>
+                        <ul className="mt-6 space-y-3 text-sm text-purple-100">
+                            {plan.features.map((feature, index) => (
+                                <li key={index}>✔ {feature}</li>
+                            ))}
+                        </ul>
                         <div className="mt-6 text-center">
-                            <span className="text-3xl font-semibold text-gray-800">${plan.price.toFixed(2)} / month</span>
+                            <span className="text-3xl font-semibold text-white">${plan.price.toFixed(2)} <span className="text-base">/ month</span></span>
                         </div>
                         <button
                             onClick={() => openPopup(plan)}
-                            className="mt-6 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                            className="mt-6 w-full bg-purple-700 text-white py-2 rounded-2xl hover:bg-purple-600 transition duration-300"
                         >
                             View Details
                         </button>
@@ -114,7 +109,7 @@ const SubscriptionPage = () => {
             </div>
 
             {/* Footer */}
-            <footer className="text-center py-6 bg-gray-900 text-white mt-12">
+            <footer className="text-center py-6 mt-16 text-purple-200">
                 <p>© 2025 Our Platform. All rights reserved.</p>
             </footer>
 
@@ -125,4 +120,3 @@ const SubscriptionPage = () => {
 };
 
 export default SubscriptionPage;
-    

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import CustomApiPlayground from './CustomApiPlayground';
 
 const languageOptions = {
     javascript: ['fetch', 'axios', 'http'],
@@ -9,12 +10,18 @@ const languageOptions = {
     php: ['file_get_contents', 'curl', 'guzzle'],
 };
 
-const PublicApiCodePanel = ({ code, endpoint }) => {
+const PublicApiCodePanel = ({ code, endpoint, isPlayground, isDarkMode }) => {
+    if (isPlayground) {
+        return (
+            <div className="w-2/5 ml-4 fixed top-0 right-0 pt-12 min-h-full">
+                <CustomApiPlayground isDarkMode={isDarkMode} />
+            </div>
+        );
+    }
+
     const [activeLang, setActiveLang] = useState('javascript');
     const [requestType, setRequestType] = useState(languageOptions['javascript'][0]);
     const [output, setOutput] = useState(null);
-
-    console.log(endpoint)
 
     useEffect(() => {
         setRequestType(languageOptions[activeLang][0]);
@@ -27,7 +34,6 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
 
     const handleRun = async () => {
         setOutput(null);
-
         try {
             const res = await fetch(endpoint);
             const json = await res.json();
@@ -36,7 +42,6 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
             setOutput({ error: 'Failed to fetch data.', message: err.message });
         }
     };
-
 
     const handleDownload = () => {
         if (!output) return;
@@ -51,14 +56,19 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
     };
 
     return (
-        <div className="w-1/3 bg-[#1e1e1e] p-4 ml-4 shadow-lg border border-purple-700 flex flex-col min-h-screen" style={{ maxHeight: '85vh' }}>
+        <div className={`w-1/3 p-4 ml-4 pt-20 fixed right-0 top-0 min-h-full shadow-lg ${
+            isDarkMode ? 'bg-[#1e1e1e] text-white' : 'bg-white text-black'
+        }`}>
             {/* Language Tabs */}
             <div className="flex space-x-2 mb-4">
                 {Object.keys(languageOptions).map((lang) => (
                     <button
                         key={lang}
-                        className={`px-3 py-1 rounded-3xl text-sm font-medium capitalize transition ${activeLang === lang ? 'bg-purple-700 text-white' : 'bg-purple-800/50 text-purple-300 hover:bg-purple-500'
-                            }`}
+                        className={`px-3 py-1 rounded-3xl text-sm font-medium capitalize transition ${
+                            activeLang === lang
+                                ? 'bg-purple-700 text-white'
+                                : 'bg-purple-300 text-black hover:bg-purple-400'
+                        }`}
                         onClick={() => setActiveLang(lang)}
                     >
                         {lang}
@@ -66,20 +76,18 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
                 ))}
             </div>
 
-            {/* Request Type Dropdown */}
-            <div className="mb-2">
-                <select
-                    value={requestType}
-                    onChange={(e) => setRequestType(e.target.value)}
-                    className="text-sm bg-purple-800 text-white border border-purple-800 rounded-3xl px-2 py-1"
-                >
-                    {languageOptions[activeLang].map((type) => (
-                        <option key={type} value={type}>
-                            {type}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            {/* Request Dropdown */}
+            <select
+                value={requestType}
+                onChange={(e) => setRequestType(e.target.value)}
+                className="text-sm mb-2 border rounded-3xl px-3 py-1 bg-purple-100 text-black"
+            >
+                {languageOptions[activeLang].map((type) => (
+                    <option key={type} value={type}>
+                        {type}
+                    </option>
+                ))}
+            </select>
 
             {/* Code Viewer */}
             <div className="flex-1 mb-4 rounded-lg overflow-y-auto">
@@ -88,46 +96,39 @@ const PublicApiCodePanel = ({ code, endpoint }) => {
                     style={vscDarkPlus}
                     customStyle={{
                         padding: '1rem',
-                        background: '#1e1e1e',
+                        background: isDarkMode ? '#1e1e1e' : '#545454',
+                        color: isDarkMode ? 'white' : '#000',
                         fontSize: '0.85rem',
                         borderRadius: '0.5rem',
                         margin: 0,
                         whiteSpace: 'pre-wrap',
                         wordBreak: 'break-word',
                     }}
-                    wrapLongLines={true}
                 >
                     {code[activeLang]?.[requestType] || '// Code not available'}
                 </SyntaxHighlighter>
             </div>
 
             {/* Footer Actions */}
-            <div className="pt-2 border-t border-purple-800 flex justify-between">
-                <button
-                    className="bg-purple-700 hover:bg-purple-800 text-white text-sm px-3 py-1 rounded-3xl"
-                    onClick={handleCopy}
-                >
+            <div className="pt-2 border-t flex justify-between">
+                <button className="bg-purple-700 text-white px-3 py-1 rounded-3xl" onClick={handleCopy}>
                     Copy
                 </button>
-                <button
-                    className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-3 py-1 rounded-3xl"
-                    onClick={handleRun}
-                >
+                <button className="bg-purple-600 text-white px-3 py-1 rounded-3xl" onClick={handleRun}>
                     Run this code
                 </button>
             </div>
 
-            {/* Output Viewer */}
+            {/* Output */}
             {output && (
                 <div className="mt-4 bg-purple-900 text-sm text-purple-100 p-3 rounded-3xl max-h-60 overflow-y-auto border border-purple-700">
                     <button
-                        className="mt-2 bg-purple-950 hover:bg-purple-700 text-white border-2 font-bold border-purple-200 text-md px-3 py-1 rounded-3xl"
+                        className="mt-2 bg-purple-950 hover:bg-purple-700 text-white border font-bold px-3 py-1 rounded-3xl"
                         onClick={handleDownload}
                     >
                         Download JSON
                     </button>
                     <pre>{JSON.stringify(output, null, 2)}</pre>
-                    
                 </div>
             )}
         </div>

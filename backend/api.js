@@ -8,6 +8,7 @@ import ApiUserRoutes from './routes/apiuser.route.js';
 import UserRoutes from './routes/user.route.js';
 import networkRoutes from './routes/network.routes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import postRoutes from './routes/post.routes.js';
 
 
 // Load environment variables
@@ -29,12 +30,11 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Routes
-app.use('/api', ApiUserRoutes);           // User-related API routes
-app.use('/api/auth', UserRoutes);         // Authentication-related API routes
-app.use('/api/network', networkRoutes);  // Network-related API routes
-app.use('/api/payment', paymentRoutes);  // Payment-related API routes
-
-       
+app.use('/api', ApiUserRoutes);
+app.use('/api/auth', UserRoutes);
+app.use('/api/network', networkRoutes);
+app.use('/api/payment', paymentRoutes);
+app.use('/api/community', postRoutes);
 
 // Root route (for testing)
 app.get('/', (req, res) => {

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Query User</title>
+  </head>
+  <body>
+    <h1>Query User</h1>
+    <form action="/query_user" method="POST">
+      <label for="column">Select Column:</label>
+      <select name="column" id="column">
+        <option value="name">Name</option>
+        <option value="age">Age</option>
+        <option value="email">Email</option>
+        <option value="city">City</option>
+        <option value="country">Country</option>
+      </select>
+      <br />
+      <label for="value">Enter Value:</label>
+      <input type="text" name="value" id="value" required />
+      <br />
+      <button type="submit">Submit Query</button>
+    </form>
+  </body>
+</html>
