@@ -31,7 +31,7 @@ export default function LandingPage() {
           <br className="hidden md:block" /> One Unified Platform
         </h2>
         <p className="text-purple-100/80 text-lg max-w-2xl mx-auto mb-10">
-          Boost your productivity with ToolBoxHub — a centralized, stylish, and futuristic utility suite.
+          Boost your productivity with ToolSuite — a centralized, stylish, and futuristic utility suite.
         </p>
 
         <div className="max-w-lg mx-auto mb-8">
@@ -54,7 +54,7 @@ export default function LandingPage() {
     className="text-4xl font-bold text-center mb-16 text-purple-100 drop-shadow-md"
     data-aos="fade-up"
   >
-    Why ToolBoxHub?
+    Why ToolSuite?
   </h3>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto border border-purple-50 p-4 rounded-3xl backdrop-blur-3xl shadow-lg shadow-purple-50">
     {[
@@ -139,7 +139,7 @@ export default function LandingPage() {
 
       <footer className="bg-[#0b0f1a] text-purple-300/80 border-t border-purple-800 py-8 text-center text-sm relative">
         <div className="absolute top-0 left-0 w-full h-full blur-2xl bg-gradient-to-r from-purple-500/10 via-purple-500/10 to-indigo-500/10 opacity-20 -z-10" />
-        © {new Date().getFullYear()} ToolBoxHub. All rights reserved.
+        © {new Date().getFullYear()} ToolSuite. All rights reserved.
       </footer>
     </div>
   );

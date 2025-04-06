@@ -207,10 +207,6 @@ const ColorTool = () => {
 
   return (
     <div className="min-h-screen backdrop-blur-lg border-2 border-purple-100 rounded-3xl p-3">
-      {/* ChatWithAI Component placed at the top */}
-      <div className="mb-10">
-        <ChatWithAI />
-      </div>
 
       {/* Floating Controls */}
       <div className="sticky bg-white shadow-md px-4 py-2 rounded-full flex gap-3 z-50">
@@ -328,6 +324,10 @@ const ColorTool = () => {
             />
           </div>
         </div>
+      </div>
+            {/* ChatWithAI Component placed at the top */}
+        <div className="flex mx-auto mt-10 w-full">
+        <ChatWithAI />
       </div>
     </div>
   );

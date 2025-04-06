@@ -66,7 +66,7 @@ const ChatWithAI = () => {
             <div className="flex flex-col space-y-4 overflow-y-auto max-h-[400px] p-4 bg-gray-50 rounded-lg">
                 {conversation.map((msg, index) => (
                     <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} space-x-2`}>
-                        <div className={`max-w-xs px-4 py-2 rounded-lg ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
+                        <div className={`max-w-xs px-4 py-2 rounded-lg ${msg.sender === 'user' ? 'bg-purple-500 text-white' : 'bg-gray-200'}`}>
                             <p>{msg.text}</p>
                         </div>
                     </div>
