@@ -1,27 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import { useTheme } from '../../components/Theme/themecontext';
 
 const ImageConverter = () => {
+  const { isDarkMode, toggleTheme } = useTheme(); // Use the theme context
   const [imageFile, setImageFile] = useState(null);
   const [convertedURL, setConvertedURL] = useState(null);
   const [format, setFormat] = useState('png');
   const [imagePreview, setImagePreview] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(true); // default to dark mode
   const fileInputRef = useRef();
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme) {
-      setIsDarkMode(storedTheme === 'dark');
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev);
-  };
 
   const handleFile = (file) => {
     if (!file || !file.type.startsWith('image/')) return;
@@ -84,23 +70,13 @@ const ImageConverter = () => {
 
   return (
     <div
-      className={`min-h-screen p-6 transition-colors duration-300 ${
-        isDarkMode
-          ? 'bg-gradient-to-b from-black via-purple-400 to-black text-white'
-          : 'bg-gradient-to-b from-purple-300 via-white to-purple-300 text-black'
+      className={`min-h-screen p-6 transition-colors duration-300 ${isDarkMode
+        ? 'bg-gradient-to-b from-black via-purple-400 to-black text-white'
+        : 'bg-gradient-to-b from-purple-300 via-white to-purple-300 text-black'
       }`}
     >
       <div className="flex justify-end mb-4">
-        <button
-          onClick={toggleTheme}
-          className={`px-4 py-2 rounded-full font-medium transition ${
-            isDarkMode
-              ? 'bg-white text-purple-900 hover:bg-gray-200'
-              : 'bg-purple-900 text-white hover:bg-purple-700'
-          }`}
-        >
-          Toggle {isDarkMode ? 'Light' : 'Dark'} Mode
-        </button>
+        {/* Remove the button for theme toggle */}
       </div>
 
       <div

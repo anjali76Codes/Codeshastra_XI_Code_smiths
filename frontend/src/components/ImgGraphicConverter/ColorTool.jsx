@@ -3,12 +3,32 @@ import { HexColorPicker } from 'react-colorful';
 import { colord, extend } from 'colord';
 import namesPlugin from 'colord/plugins/names';
 import html2canvas from 'html2canvas';
+import { usePaymentStatus } from '../login/PaymentStatusContext';
 import AIPalette from './AIPalette';
 import ChatWithAI from './ChatWithAI';
 
 extend([namesPlugin]);
 
 const ColorTool = () => {
+  const { isPremium } = usePaymentStatus(); // Access payment status
+
+  // If the user is not premium, show a subscription prompt
+  if (!isPremium) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-purple-300 via-white to-purple-300 text-black">
+        <div className="flex justify-center items-center h-full text-center">
+          <div className="bg-white p-6 rounded-2xl shadow-md">
+            <h2 className="text-2xl font-semibold mb-4">Upgrade to Premium!</h2>
+            <p className="mb-6">You need to subscribe to access the Color Tool. Please upgrade your plan.</p>
+            <a href="/subscribe" className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition">
+              Upgrade Now
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const [color, setColor] = useState('#3498db');
   const [paletteType, setPaletteType] = useState('complementary');
   const [locked, setLocked] = useState(Array(6).fill(false));
@@ -238,6 +258,7 @@ const ColorTool = () => {
       {/* Sticky Palette */}
       <div
         ref={paletteRef}
+
         className={`sticky mt-10 z-40 transition-all duration-300 ease-in-out bg-white rounded-xl overflow-hidden shadow-md flex w-full ${isSticky ? 'h-32' : 'h-80'}`}
       >
         {palette.map((hex, i) => (
