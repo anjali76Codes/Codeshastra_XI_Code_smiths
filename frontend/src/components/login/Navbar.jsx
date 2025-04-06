@@ -49,7 +49,7 @@ export default function Navbar() {
       dropdown: [
         { label: 'Graphic Generator', path: '/graphic' },
         { label: 'Image Converter', path: '/image' },
-        { label: 'Chat with AI', path: '/chat' },
+        // { label: 'Chat with AI', path: '/chat' },
       ],
     },
     {
@@ -62,6 +62,7 @@ export default function Navbar() {
       label: 'Services',
       dropdown: [
         { label: 'API Docs', path: '/api' },
+        { label: 'API Security', path: '/encrypt' },
         { label: 'Password Generator', path: '/password' },
       ],
     },
@@ -71,6 +72,9 @@ export default function Navbar() {
         { label: 'Linux Terminal', path: '/terminal' },
         { label: 'SQL Playground', path: '/query' },
       ],
+    },
+    {
+      label: 'Community', path: '/community'
     },
     {
       label: 'Account',

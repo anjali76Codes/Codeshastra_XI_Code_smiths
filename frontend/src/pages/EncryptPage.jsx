@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { solarizedlight } from 'react-syntax-highlighter/dist/esm/styles/prism'; // Updated style
+import { solarizedlight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { duotoneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-const EncryptPage = () => {
+const EncryptPage = ({ isDarkMode }) => {
   const [inputUrl, setInputUrl] = useState('https://jsonplaceholder.typicode.com/todos/1');
   const [encryptedUrl, setEncryptedUrl] = useState('');
   const [manualEncryptedUrl, setManualEncryptedUrl] = useState('');
@@ -13,81 +14,80 @@ const EncryptPage = () => {
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const secretKey = '124'; // Ideally, this should not be hardcoded
+  const secretKey = '124'; // Ideally not hardcoded in production
 
-  // Encrypt API URL (Server Side Logic)
   const handleEncrypt = () => {
     const encrypted = CryptoJS.AES.encrypt(inputUrl, secretKey).toString();
     setEncryptedUrl(encrypted);
   };
 
-  // Fetch data from the manually entered encrypted URL (Client Side)
   const handleFetchData = async () => {
     setLoading(true);
+    setError(null);
     try {
-      const urlToDecrypt = manualEncryptedUrl || encryptedUrl; // Use manual encrypted URL if provided
-
+      const urlToDecrypt = manualEncryptedUrl || encryptedUrl;
       const bytes = CryptoJS.AES.decrypt(urlToDecrypt, secretKey);
       const decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
 
       const response = await axios.get(decryptedUrl);
       setDecryptedData(response.data);
-      setLoading(false);
     } catch (err) {
       setError('Failed to fetch data or decrypt URL');
+    } finally {
       setLoading(false);
     }
   };
 
-  // Function to escape characters in the URL for safe use in the code snippet
-  const escapeStringForSnippet = (str) => {
-    return str.replace(/`/g, '\\`').replace(/\$/g, '\\$'); // Escape backticks and dollar signs
-  };
-
-  // Copy content to clipboard
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text).then(() => {
       alert('Copied to clipboard!');
-    }).catch(err => {
-      alert('Failed to copy text: ', err);
     });
   };
 
-  // Toggle show more/less
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const bgColor = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-white';
+  const cardColor = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-gray-100';
+  const inputColor = isDarkMode ? 'bg-[#2a2a40] text-white' : 'bg-white text-black';
+  const textColor = isDarkMode ? 'text-white' : 'text-black';
+  const borderColor = isDarkMode ? 'border-gray-700' : 'border-gray-300';
+  const shadowStyle = 'shadow-xl shadow-purple-900/30';
+  const buttonEncrypt = 'bg-purple-600 hover:bg-purple-700';
+  const buttonFetch = 'bg-purple-600 hover:bg-purple-700';
+  const buttonSecondary = 'bg-purple-500 hover:bg-purple-600';
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8 flex justify-center">
-      <div className="w-full max-w-7xl flex flex-row gap-8">
-        {/* Server Side: Encrypt URL Section */}
-        <div className="bg-gray-800 p-8 rounded-lg shadow-xl w-1/2">
-          <h2 className="text-center text-2xl font-semibold text-blue-500 mb-6">Server Side: Encrypt URL</h2>
+    <div className={`min-h-screen ${bgColor} ${textColor} p-8 flex justify-center transition duration-300`}>
+      <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-8">
+        {/* Encrypt Section */}
+        <div className={`${cardColor} ${shadowStyle} p-8 rounded-2xl w-full lg:w-1/2`}>
+          <h2 className="text-center text-2xl font-bold text-purple-400 mb-6">🔐 Server Side: Encrypt URL</h2>
 
           <input
             type="text"
-            className="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 mb-6"
+            className={`w-full p-4 rounded-lg mb-4 border ${borderColor} ${inputColor} focus:ring-2 focus:ring-purple-500`}
             placeholder="Enter API URL to Encrypt"
             value={inputUrl}
             onChange={(e) => setInputUrl(e.target.value)}
           />
+
           <button
             onClick={handleEncrypt}
-            className="w-full bg-blue-600 text-white p-4 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 mb-6"
+            className={`w-full text-white p-3 rounded-xl font-semibold transition ${buttonEncrypt}`}
           >
             Encrypt URL
           </button>
 
-          {/* Display Encrypted URL */}
           {encryptedUrl && (
-            <div className="mb-6">
-              <strong className="block text-lg mb-2">Encrypted URL:</strong>
-              <div className="flex justify-between items-center">
-                <pre className="bg-gray-700 p-4 rounded-lg break-words overflow-x-auto">{encryptedUrl}</pre>
+            <div className="mt-6">
+              <h3 className="font-semibold mb-2">Encrypted URL:</h3>
+              <div className="flex items-start gap-3">
+                <pre className={`flex-1 p-4 rounded-lg overflow-x-auto ${inputColor}`}>{encryptedUrl}</pre>
                 <button
                   onClick={() => handleCopy(encryptedUrl)}
-                  className="bg-blue-500 text-white p-2 rounded-lg ml-4 hover:bg-blue-600"
+                  className={`${buttonSecondary} text-white px-4 py-2 rounded-lg`}
                 >
                   Copy
                 </button>
@@ -95,68 +95,71 @@ const EncryptPage = () => {
             </div>
           )}
 
-          {/* Code Snippet for Decryption and API Call */}
           <div className="mt-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Decryption and API Call (Client-Side)</h3>
-            <SyntaxHighlighter language="javascript" style={solarizedlight}>
-              {`const secretKey = '124'; // Your AES Secret Key
-
-const encryptedUrl = 'Your Encrypted URL'; // Encrypted URL
-
-// Decrypt the URL
+            <h3 className="text-lg font-semibold mb-4">Decryption and API Call Snippet</h3>
+            <SyntaxHighlighter
+              language="javascript"
+              style={isDarkMode ? duotoneDark : solarizedlight}
+              customStyle={{
+                backgroundColor: 'transparent',
+                padding: '1rem',
+                borderRadius: '0.5rem',
+              }}
+            >
+{`const secretKey = '124';
+const encryptedUrl = 'Your Encrypted URL';
 const bytes = CryptoJS.AES.decrypt(encryptedUrl, secretKey);
 const decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
 
-// Fetch data from decrypted URL
 axios.get(decryptedUrl)
   .then(response => {
-    console.log(response.data); // Data fetched from the API
+    console.log(response.data);
   })
   .catch(error => {
-    console.error('Error fetching data: ', error);
-  });
-`}
+    console.error('Error fetching:', error);
+  });`}
             </SyntaxHighlighter>
+
             <button
-              onClick={() => handleCopy(`const secretKey = '124';\n\nconst encryptedUrl = 'Your Encrypted URL';\n\n// Decrypt the URL\nconst bytes = CryptoJS.AES.decrypt(encryptedUrl, secretKey);\nconst decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);\n\n// Fetch data from decrypted URL\naxios.get(decryptedUrl)\n  .then(response => {\n    console.log(response.data); // Data fetched from the API\n  })\n  .catch(error => {\n    console.error('Error fetching data: ', error);\n  });`)}
-              className="bg-blue-500 text-white p-2 rounded-lg mt-4 hover:bg-blue-600"
+              onClick={() => handleCopy(`const secretKey = '124';\nconst encryptedUrl = 'Your Encrypted URL';\nconst bytes = CryptoJS.AES.decrypt(encryptedUrl, secretKey);\nconst decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);\n\naxios.get(decryptedUrl)\n  .then(response => {\n    console.log(response.data);\n  })\n  .catch(error => {\n    console.error('Error fetching:', error);\n  });`)}
+              className={`mt-4 ${buttonSecondary} text-white px-4 py-2 rounded-lg`}
             >
               Copy Code
             </button>
           </div>
         </div>
 
-        {/* Client Side: Fetch Data from Encrypted URL Section */}
-        <div className="bg-gray-800 p-8 rounded-lg shadow-xl w-1/2">
-          <h2 className="text-center text-2xl font-semibold text-green-500 mb-6">Client Side: Fetch Data from Encrypted URL</h2>
+        {/* Decrypt + Fetch Section */}
+        <div className={`${cardColor} ${shadowStyle} p-8 rounded-2xl w-full lg:w-1/2`}>
+          <h2 className="text-center text-2xl font-bold text-purple-400 mb-6">🌐 Client Side: Fetch Encrypted URL</h2>
 
           <input
             type="text"
-            className="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 mb-6"
-            placeholder="Enter Encrypted URL to Fetch"
+            className={`w-full p-4 rounded-lg mb-4 border ${borderColor} ${inputColor} focus:ring-2 focus:ring-purple-500`}
+            placeholder="Paste Encrypted URL"
             value={manualEncryptedUrl}
             onChange={(e) => setManualEncryptedUrl(e.target.value)}
           />
+
           <button
             onClick={handleFetchData}
-            className="w-full bg-green-600 text-white p-4 rounded-lg font-semibold hover:bg-green-700 transition duration-300"
+            className={`w-full text-white p-3 rounded-xl font-semibold transition ${buttonFetch}`}
           >
             Fetch Data from Encrypted URL
           </button>
 
-          {/* Loading and Error States */}
-          {loading && <div className="text-center text-blue-500 mt-4">Loading...</div>}
-          {error && <div className="text-center text-red-500 mt-4">{error}</div>}
+          {loading && <div className="text-center mt-4 text-purple-400">Loading...</div>}
+          {error && <div className="text-center mt-4 text-red-400">{error}</div>}
 
-          {/* Decrypted Data Display */}
           {decryptedData && (
             <div className="mt-6">
-              <pre className="bg-gray-700 p-4 rounded-lg overflow-x-auto">
+              <h3 className="font-semibold mb-2">Decrypted Response:</h3>
+              <pre className={`p-4 rounded-lg overflow-x-auto whitespace-pre-wrap ${inputColor}`}>
                 {JSON.stringify(decryptedData, null, 2).split('\n').slice(0, isExpanded ? undefined : 6).join('\n')}
               </pre>
               <button
                 onClick={toggleExpand}
-                className="bg-blue-500 text-white p-2 rounded-lg mt-4 hover:bg-blue-600"
+                className={`mt-4 ${buttonSecondary} text-white px-4 py-2 rounded-lg`}
               >
                 {isExpanded ? 'Show Less' : 'Show More'}
               </button>

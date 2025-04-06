@@ -19,16 +19,19 @@ const PublicApiCodePanel = ({ code, endpoint, isPlayground, isDarkMode }) => {
         );
     }
 
-    const [activeLang, setActiveLang] = useState('javascript');
-    const [requestType, setRequestType] = useState(languageOptions['javascript'][0]);
+    const availableLangs = Object.keys(languageOptions).filter(lang => code?.[lang]);
+    const defaultLang = availableLangs[0] || 'javascript';
+
+    const [activeLang, setActiveLang] = useState(defaultLang);
+    const [requestType, setRequestType] = useState(languageOptions[defaultLang]?.[0] || '');
     const [output, setOutput] = useState(null);
 
     useEffect(() => {
-        setRequestType(languageOptions[activeLang][0]);
+        setRequestType(languageOptions[activeLang]?.[0] || '');
     }, [activeLang]);
 
     const handleCopy = () => {
-        const text = code[activeLang]?.[requestType] || '';
+        const text = code?.[activeLang]?.[requestType] || '';
         navigator.clipboard.writeText(text);
     };
 
@@ -82,7 +85,7 @@ const PublicApiCodePanel = ({ code, endpoint, isPlayground, isDarkMode }) => {
                 onChange={(e) => setRequestType(e.target.value)}
                 className="text-sm mb-2 border rounded-3xl px-3 py-1 bg-purple-100 text-black"
             >
-                {languageOptions[activeLang].map((type) => (
+                {(languageOptions[activeLang] || []).map((type) => (
                     <option key={type} value={type}>
                         {type}
                     </option>
@@ -105,7 +108,7 @@ const PublicApiCodePanel = ({ code, endpoint, isPlayground, isDarkMode }) => {
                         wordBreak: 'break-word',
                     }}
                 >
-                    {code[activeLang]?.[requestType] || '// Code not available'}
+                    {code?.[activeLang]?.[requestType] || '// Code not available'}
                 </SyntaxHighlighter>
             </div>
 

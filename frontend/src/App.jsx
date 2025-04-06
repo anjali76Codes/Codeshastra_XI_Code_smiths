@@ -47,8 +47,8 @@ import PostForm from './components/community_feature/PostForm';
 import EncryptPage from './pages/EncryptPage';
 
 // Multiplayer Typing Test Pages
-import RoomSelector from './pages/RoomSelector';
-import TypingTestPage from './pages/TypingTest';
+// import RoomSelector from './pages/RoomSelector';
+// import TypingTestPage from './pages/TypingTest';
 
 // SEO and Dashboard
 import MainApp from './components/MainApp';
