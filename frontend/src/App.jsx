@@ -42,6 +42,17 @@ import QueryMaker from './components/sql_feature/QueryMaker';
 import CommunityHomePage from './pages/community_feature/CommunityHomePage';
 import PostForm from './components/community_feature/PostForm';
 
+// AES Encryption Page
+import EncryptPage from './pages/EncryptPage';
+
+// Multiplayer Typing Test Pages
+import RoomSelector from './pages/RoomSelector';
+import TypingTestPage from './pages/TypingTest';
+
+// SEO and Dashboard
+import MainApp from './components/MainApp';
+import FeaturePage from './pages/FeaturePage';
+
 import './App.css';
 
 function App() {
@@ -75,12 +86,21 @@ function App() {
         <Route path="/password" element={<PasswordGenerator />} />
         <Route path="/terminal" element={<Linuxterminal />} />
         <Route path="/embed" element={<EmbeddedWebsite />} />
+        <Route path="/encrypt" element={<EncryptPage />} />
         <Route path="/mockdata" element={<MockDataGenerator />} />
         <Route path="/query" element={<QueryMaker />} />
 
         {/* Community */}
         <Route path="/community" element={<CommunityHomePage />} />
         <Route path="/community/post" element={<PostForm />} />
+
+        {/* Multiplayer Typing Test */}
+        <Route path="/room" element={<RoomSelector />} />
+        <Route path="/test/:code" element={<TypingTestPage />} />
+
+        {/* SEO & Dashboard */}
+        <Route path="/seo" element={<MainApp />} />
+        <Route path="/dashboard" element={<FeaturePage />} />
       </Routes>
     </Router>
   );
