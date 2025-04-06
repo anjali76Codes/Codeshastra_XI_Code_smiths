@@ -56,59 +56,57 @@ import FeaturePage from './pages/FeaturePage';
 
 // Context for Payment Status
 import { PaymentStatusProvider } from './components/login/PaymentStatusContext';
+import { ThemeProvider } from './components/Theme/themecontext';
 
 import './App.css';
 
 function App() {
   return (
-    <PaymentStatusProvider> {/* Wrap the app with the provider */}
-      <Router>
-        <Navbar />
+    <PaymentStatusProvider> {/* Wrap the app with the payment provider */}
+      <ThemeProvider> {/* Wrap the app with the theme provider */}
+        <Router>
+          <Navbar />
+          <Routes>
+            {/* Landing & Auth */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/subscribe" element={<SubscriptionPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/payment/status" element={<PaymentStatus />} /> {/* Updated PaymentStatus Route */}
 
-        <Routes>
-          {/* Landing & Auth */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/subscribe" element={<SubscriptionPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/payment/status" element={<PaymentStatus />} /> {/* Updated PaymentStatus Route */}
+            {/* Graphic/Image Features */}
+            <Route path="/graphic" element={<GraphicSuite />} />
+            <Route path="/image" element={<ImageConverter />} />
+            <Route path="/color" element={<ColorFeature />} />
+            <Route path="/chat" element={<ChatWithAI />} />
 
-          {/* Graphic/Image Features */}
-          <Route path="/graphic" element={<GraphicSuite />} />
-          <Route path="/image" element={<ImageConverter />} />
-          <Route path="/color" element={<ColorFeature />} />
-          <Route path="/chat" element={<ChatWithAI />} />
+            {/* Format & Code Features */}
+            <Route path="/format" element={<FormatConverterPage />} />
+            <Route path="/formatter" element={<FormatterApp />} />
+            <Route path="/code" element={<CodeFormatter />} />
 
-          {/* Format & Code Features */}
-          <Route path="/format" element={<FormatConverterPage />} />
-          <Route path="/formatter" element={<FormatterApp />} />
-          <Route path="/code" element={<CodeFormatter />} />
+            {/* Utility Tools */}
+            <Route path="/random" element={<RandomNoGeneratorPage />} />
+            <Route path="/api" element={<ApiDocsServicePage />} />
+            <Route path="/password" element={<PasswordGenerator />} />
+            <Route path="/terminal" element={<Linuxterminal />} />
+            <Route path="/embed" element={<EmbeddedWebsite />} />
+            <Route path="/encrypt" element={<EncryptPage />} />
+            <Route path="/mockdata" element={<MockDataGenerator />} />
+            <Route path="/query" element={<QueryMaker />} />
 
-          {/* Utility Tools */}
-          <Route path="/random" element={<RandomNoGeneratorPage />} />
-          <Route path="/api" element={<ApiDocsServicePage />} />
-          <Route path="/password" element={<PasswordGenerator />} />
-          <Route path="/terminal" element={<Linuxterminal />} />
-          <Route path="/embed" element={<EmbeddedWebsite />} />
-          <Route path="/encrypt" element={<EncryptPage />} />
-          <Route path="/mockdata" element={<MockDataGenerator />} />
-          <Route path="/query" element={<QueryMaker />} />
+            {/* Community */}
+            <Route path="/community" element={<CommunityHomePage />} />
+            <Route path="/community/post" element={<PostForm />} />
 
-          {/* Community */}
-          <Route path="/community" element={<CommunityHomePage />} />
-          <Route path="/community/post" element={<PostForm />} />
-
-          {/* Multiplayer Typing Test */}
-          <Route path="/room" element={<RoomSelector />} />
-          <Route path="/test/:code" element={<TypingTestPage />} />
-
-          {/* SEO & Dashboard */}
-          <Route path="/seo" element={<MainApp />} />
-          <Route path="/dashboard" element={<FeaturePage />} />
-        </Routes>
-      </Router>
+            {/* SEO & Dashboard */}
+            <Route path="/seo" element={<MainApp />} />
+            <Route path="/dashboard" element={<FeaturePage />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
     </PaymentStatusProvider>
   );
 }

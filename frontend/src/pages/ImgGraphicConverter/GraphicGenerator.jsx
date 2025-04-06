@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import QRGenerator from '../../components/ImgGraphicConverter/QrGenerator';
 import BarcodeGenerator from '../../components/ImgGraphicConverter/BarcodeGenerator';
 import ColorTool from '../../components/ImgGraphicConverter/ColorTool';
+import { useTheme } from '../../components/Theme/themecontext'; // Import the useTheme hook
 
 const tabs = [
   { id: 'qr', label: 'QR Code' },
@@ -10,28 +11,16 @@ const tabs = [
 ];
 
 const GraphicSuite = () => {
+  const { isDarkMode, toggleDarkMode } = useTheme(); // Use context for dark mode state
+
   const [activeTab, setActiveTab] = useState('qr');
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
-  useEffect(() => {
-    // Optional: Load from localStorage
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    }
-  }, []);
-
-  useEffect(() => {
-    // Save preference to localStorage
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
 
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'qr':
         return <QRGenerator isDarkMode={isDarkMode} />;
       case 'barcode':
-        return <BarcodeGenerator isDarkMode={isDarkMode} />
+        return <BarcodeGenerator isDarkMode={isDarkMode} />;
       case 'palette':
         return <ColorTool />;
       default:
@@ -41,19 +30,13 @@ const GraphicSuite = () => {
 
   return (
     <div className={`${isDarkMode ? 'bg-gradient-to-b from-black via-purple-400 to-black text-white' : 'bg-gradient-to-b from-purple-300 via-white to-purple-300 text-black'} min-h-screen transition-colors duration-300 font-sans`}>
-
       {/* Header */}
       <header className="w-full py-6 px-6 flex flex-col items-center relative">
         <h1 className="text-4xl font-bold mb-2">Graphic Toolbox</h1>
         <p className="text-purple-400 text-sm">Generate QR, Barcode & explore color magic</p>
 
-        {/* Theme Toggle */}
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="absolute top-6 right-6 px-3 py-1 rounded-full border border-purple-500 text-xs hover:bg-purple-600 transition-all"
-        >
-          {isDarkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
-        </button>
+        {/* Theme Toggle (Handled by Navbar) */}
+        {/* No need for theme toggle here as it's handled globally by ThemeContext */}
 
         {/* Tab Navigation */}
         <nav className={`${isDarkMode ? ' bg-purple-900' : ' bg-purple-900/50'} mt-6 flex space-x-4 bg-purple-800 px-4 py-2 rounded-full shadow-lg`}>

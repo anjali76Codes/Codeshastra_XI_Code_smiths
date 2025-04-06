@@ -24,14 +24,6 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-black via-purple-900 to-black text-white font-sans">
-      <header className="w-full border-b border-purple-900/30 backdrop-blur-sm bg-[#0b0f1a]/60">
-        <div className="container mx-auto px-6 py-6 flex justify-between items-center">
-          <h1 className="text-3xl font-extrabold tracking-widest text-transparent bg-gradient-to-r from-purple-400 via-purple-400 to-purple-500 bg-clip-text animate-pulse">
-            ToolBoxHub
-          </h1>
-        </div>
-      </header>
-
       <section className="text-center px-6 py-32 relative z-10" data-aos="fade-up">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 to-purple-500/5 blur-3xl rounded-full w-full h-full -z-10 opacity-20" />
         <h2 className="text-6xl font-extrabold leading-tight mb-6 text-transparent bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text ">
