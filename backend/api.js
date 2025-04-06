@@ -7,8 +7,9 @@ import cors from 'cors';
 import ApiUserRoutes from './routes/apiuser.route.js';
 import UserRoutes from './routes/user.route.js';
 import networkRoutes from './routes/network.routes.js';
-import paymentRoutes from './routes/paymentRoutes.js';
+// import paymentRoutes from './routes/paymentRoutes.js';
 import postRoutes from './routes/post.routes.js';
+import paymentStoreRoutes from './routes/paymentStore.route.js';
 
 
 // Load environment variables
@@ -22,10 +23,7 @@ app.use(express.json());
 app.use(cors());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
@@ -33,8 +31,9 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
 app.use('/api', ApiUserRoutes);
 app.use('/api/auth', UserRoutes);
 app.use('/api/network', networkRoutes);
-app.use('/api/payment', paymentRoutes);
+// app.use('/api/payment', paymentRoutes);
 app.use('/api/community', postRoutes);
+app.use('/api/payment', paymentStoreRoutes);
 
 // Root route (for testing)
 app.get('/', (req, res) => {

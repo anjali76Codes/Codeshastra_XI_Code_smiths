@@ -44,11 +44,10 @@ const GraphicSuite = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-full transition-all duration-200 font-medium ${
-                activeTab === tab.id
+              className={`px-4 py-2 rounded-full transition-all duration-200 font-medium ${activeTab === tab.id
                   ? 'bg-white text-purple-700'
                   : 'text-white hover:bg-purple-800'
-              }`}
+                }`}
             >
               {tab.label}
             </button>

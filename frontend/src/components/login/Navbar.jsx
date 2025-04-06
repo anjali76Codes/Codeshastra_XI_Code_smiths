@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../Theme/themecontext';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const { isDarkMode, toggleDarkMode } = useTheme(); // Use context for dark mode state
-
+  const [username, setUsername] = useState(null);
+  const { isDarkMode, toggleDarkMode } = useTheme(); // Dark mode toggle
+  const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
@@ -20,6 +21,11 @@ export default function Navbar() {
   }, [menuOpen]);
 
   useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    setUsername(storedUsername);
+  }, []);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setActiveDropdown(null);
@@ -28,6 +34,13 @@ export default function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    setUsername(null);
+    navigate('/signin');
+  };
 
   const navLinks = [
     { label: 'Home', path: '/' },
@@ -61,13 +74,17 @@ export default function Navbar() {
     },
     {
       label: 'Account',
-      dropdown: [
-        { label: 'Sign In', path: '/signin' },
-        { label: 'Sign Up', path: '/signup' },
-        { label: 'Subscription', path: '/subscribe' },
-        { label: 'Payment', path: '/payment' },
-        { label: 'Home Dashboard', path: '/home' },
-      ],
+      dropdown: username
+        ? [
+          { label: `👤 ${username}`, path: '/home' },
+          { label: 'Logout', action: handleLogout },
+        ]
+        : [
+          { label: 'Sign In', path: '/signin' },
+          { label: 'Sign Up', path: '/signup' },
+          { label: 'Subscription', path: '/subscribe' },
+          { label: 'Payment', path: '/payment' },
+        ],
     },
   ];
   
@@ -100,16 +117,29 @@ export default function Navbar() {
                 </button>
                 {activeDropdown === idx && (
                   <div className={`absolute top-full mt-2 w-52 bg-white text-black rounded-3xl shadow-lg z-50`}>
-                    {nav.dropdown.map((item, i) => (
-                      <Link
-                        key={i}
-                        to={item.path}
-                        className="block px-4 py-2 text-sm hover:bg-purple-100 rounded-3xl transition"
-                        onClick={() => setActiveDropdown(null)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
+                    {nav.dropdown.map((item, i) =>
+                      item.action ? (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            item.action();
+                            setActiveDropdown(null);
+                          }}
+                          className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100 rounded-3xl transition"
+                        >
+                          {item.label}
+                        </button>
+                      ) : (
+                        <Link
+                          key={i}
+                          to={item.path}
+                          className="block px-4 py-2 text-sm hover:bg-purple-100 rounded-3xl transition"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          {item.label}
+                        </Link>
+                      )
+                    )}
                   </div>
                 )}
               </div>
@@ -150,16 +180,29 @@ export default function Navbar() {
                 </button>
                 {activeDropdown === idx && (
                   <div className="pl-4 mt-2 space-y-2 transition-all duration-300">
-                    {nav.dropdown.map((item, i) => (
-                      <Link
-                        key={i}
-                        to={item.path}
-                        className="block text-sm text-white hover:text-purple-300"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
+                    {nav.dropdown.map((item, i) =>
+                      item.action ? (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            item.action();
+                            setMenuOpen(false);
+                          }}
+                          className="block w-full text-left text-sm text-white hover:text-purple-300"
+                        >
+                          {item.label}
+                        </button>
+                      ) : (
+                        <Link
+                          key={i}
+                          to={item.path}
+                          className="block text-sm text-white hover:text-purple-300"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      )
+                    )}
                   </div>
                 )}
               </div>

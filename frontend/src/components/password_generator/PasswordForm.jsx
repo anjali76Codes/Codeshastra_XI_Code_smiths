@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { usePaymentStatus } from "../login/PaymentStatusContext";
 
 const PasswordForm = ({ isDarkMode }) => {
+  const { isPremium } = usePaymentStatus();
+
   const [length, setLength] = useState(8);
   const [password, setPassword] = useState("");
   const [strongMode, setStrongMode] = useState(false);
@@ -171,8 +174,15 @@ const PasswordForm = ({ isDarkMode }) => {
         )}
         {password && (
           <button
-            onClick={() => setShowLabelInput(true)}
-            className="bg-yellow-500 text-black px-4 py-2 rounded-3xl hover:bg-yellow-600 transition"
+            onClick={() => {
+              if (isPremium) {
+                setShowLabelInput(true);
+              } else {
+                alert("Saving with label is a premium feature. Please upgrade to access it.");
+              }
+            }}
+            className={`px-4 py-2 rounded-3xl transition 
+              ${isPremium ? "bg-yellow-500 text-black hover:bg-yellow-600" : "bg-gray-400 text-white cursor-not-allowed"}`}
           >
             Save with Label
           </button>
@@ -189,7 +199,7 @@ const PasswordForm = ({ isDarkMode }) => {
         </div>
       )}
 
-      {showLabelInput && (
+      {showLabelInput && isPremium && (
         <div className="space-y-3">
           <input
             type="text"
