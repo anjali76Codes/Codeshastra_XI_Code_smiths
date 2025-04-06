@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../Theme/themecontext';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('theme') === 'dark';
-  });
+  const { isDarkMode, toggleDarkMode } = useTheme(); // Use context for dark mode state
 
   const dropdownRef = useRef(null);
 
@@ -15,17 +14,6 @@ export default function Navbar() {
   const handleDropdown = (idx) => {
     setActiveDropdown(activeDropdown === idx ? null : idx);
   };
-
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem('theme', newMode ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', newMode);
-  };
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
-  }, [isDarkMode]);
 
   useEffect(() => {
     document.body.classList.toggle('overflow-x-hidden', menuOpen);
@@ -48,7 +36,6 @@ export default function Navbar() {
       dropdown: [
         { label: 'Graphic Generator', path: '/graphic' },
         { label: 'Image Converter', path: '/image' },
-        // { label: 'Color Feature', path: '/color' },
         { label: 'Chat with AI', path: '/chat' },
       ],
     },
@@ -113,11 +100,7 @@ export default function Navbar() {
                   <span className="text-xs">{activeDropdown === idx ? '▴' : '▾'}</span>
                 </button>
                 {activeDropdown === idx && (
-                  <div
-                    className={`absolute top-full mt-2 w-52 bg-white text-black rounded-3xl shadow-lg z-50 ${
-                      idx === navLinks.length - 1 ? 'right-0 left-auto' : 'left-0'
-                    }`}
-                  >
+                  <div className={`absolute top-full mt-2 w-52 bg-white text-black rounded-3xl shadow-lg z-50`}>
                     {nav.dropdown.map((item, i) => (
                       <Link
                         key={i}
