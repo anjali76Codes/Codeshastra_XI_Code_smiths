@@ -1,10 +1,10 @@
-Here’s your formatted version of the **ToolBoxHub** project for **Codeshastra XI – Code Smiths** in a clean and professional markdown style:
+Here’s your formatted version of the **ToolSuite** project for **Codeshastra XI – Code Smiths** in a clean and professional markdown style:
 
 ---
 
 # 🚀 Codeshastra XI – Code Smiths
 
-## 🧰 Project: **ToolBoxHub**
+## 🧰 Project: **ToolSuite**
 
 ### 💡 Problem Statement
 
