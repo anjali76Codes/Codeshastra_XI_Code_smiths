@@ -1,10 +1,6 @@
-Here’s your formatted version of the **ToolBoxHub** project for **Codeshastra XI – Code Smiths** in a clean and professional markdown style:
-
----
-
 # 🚀 Codeshastra XI – Code Smiths
 
-## 🧰 Project: **ToolBoxHub**
+## 🧰 Project: *ToolBoxHub*
 
 ### 💡 Problem Statement
 
@@ -86,6 +82,7 @@ Create a unified, intuitive web platform that consolidates a diverse array of co
 ---
 
 ### Linux Online Terminal
+
 - When a file is uploaded, it's converted to a base64 data URL and stored in localStorage under uploadedFile.
 - The filename is shown in the corner.
 - This setup is enough to later simulate passing SSH keys or configs into your embedded Linux terminal — though that part will need JSLinux support for file mounting, or you can display the content in another panel for now.
@@ -114,5 +111,3 @@ Create a unified, intuitive web platform that consolidates a diverse array of co
 - Follow other users' toolsets and contributions.
 
 ---
-
-Let me know if you want this in PDF or styled as a webpage presentation too!
